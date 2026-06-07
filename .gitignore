@@ -1,5 +1,22 @@
+# Environments
 .venv/
+
+# Large data directories
 example/
 data/
 runs/
+
+# Model formats (legacy/untracked weights)
 *.h5
+*.pt
+
+# Trained model weights — exclude by default, explicitly keep important/models/
+*.pth
+!important/models/*.pth
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated debug images
+debug/
