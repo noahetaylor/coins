@@ -3,16 +3,18 @@ import zipfile
 import tensorflow as tf
 #from tensorflow.keras.optimizers import RMSprop
 #from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from Categorize import findMiscategorizedImages
 
-local_zip = '/tmp/coins/qtest6.zip'
-zip_ref = zipfile.ZipFile(local_zip, 'r')
-zip_ref.extractall('/tmp/coins')
-zip_ref.close()
+# local_zip = '/tmp/coins/qtest6.zip'
+# zip_ref = zipfile.ZipFile(local_zip, 'r')
+# zip_ref.extractall('/tmp/coins')
+# zip_ref.close()
 image_size = 150
 num_epochs = 50
-base_dir = '/tmp/coins/qtest6'
+base_dir = '/home/noah/projects/image-identifier/data/coins/OriginalYay'
 train_dir = os.path.join(base_dir, 'Training')
 validation_dir = os.path.join(base_dir, 'Testing')
+miscategorizeFolder = os.path.join(base_dir, 'Miscategorized')
 
 # # Directory with our training cat pictures
 # train_cats_dir = os.path.join(train_dir, 'Quarters')
@@ -67,7 +69,7 @@ test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
 train_generator = train_datagen.flow_from_directory(
         train_dir,  # This is the source directory for training images
         target_size=(image_size, image_size),  # All images will be resized to 150x150
-        batch_size=100,
+        batch_size=8,
         # Since we use binary_crossentropy loss, we need binary labels
         class_mode='categorical')
 
@@ -75,21 +77,21 @@ train_generator = train_datagen.flow_from_directory(
 validation_generator = test_datagen.flow_from_directory(
         validation_dir,
         target_size=(image_size, image_size),
-        batch_size=12,
+        batch_size=3,
         class_mode='categorical')
 
 print(train_generator.class_indices)
 print(validation_generator.class_indices)
-class_weights = {0: 5.0, 1: 5.0, 2: 1.0, 3: 1.0}
+#class_weights = {0: 5.0, 1: 5.0, 2: 1.0, 3: 1.0}
 
 history = model.fit(
     train_generator,
-    steps_per_epoch=6,
-    epochs=30,
+    steps_per_epoch=1,
+    epochs=num_epochs,
     validation_data=validation_generator,
-    validation_steps=6,
+    validation_steps=1,
     verbose=2,
-    class_weight=class_weights  # Add class_weight here
+    #class_weight=class_weights  # Add class_weight here
 )
 
 
@@ -132,3 +134,6 @@ plt.title('Training and validation loss')
 plt.legend()
 
 plt.show()
+
+
+findMiscategorizedImages(model, validation_dir, miscategorizeFolder, image_size)

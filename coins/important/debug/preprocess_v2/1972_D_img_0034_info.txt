@@ -1,0 +1,8 @@
+folder=1972_D
+sample=img_0034.jpg
+raw_size=4656x3496
+label_cx=2280.00
+label_cy=1654.25
+label_r=1197.36
+avg_angle=296.56
+correction=-296.56

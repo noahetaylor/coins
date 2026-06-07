@@ -1,0 +1,789 @@
+/home/noah/projects/image-identifier/data/coins/Bounds/Heads
+├── Miscategorized
+│   ├── 1967-Heads_108913884.jpg
+│   ├── 1967-Heads_115875484.jpg
+│   ├── 1967-Heads_124557673.jpg
+│   ├── 1967-Heads_132830959.jpg
+│   ├── 1967-Heads_142497499.jpg
+│   ├── 1967-Heads_143173290.jpg
+│   ├── 1967-Heads_157935721.jpg
+│   ├── 1967-Heads_168335466.jpg
+│   ├── 1967-Heads_173559626.jpg
+│   ├── 1967-Heads_176827926.jpg
+│   ├── 1967-Heads_177459866.jpg
+│   ├── 1967-Heads_177459944.jpg
+│   ├── 1967-Heads_178832859.jpg
+│   ├── 1967-Heads_178850484.jpg
+│   ├── 1967-Heads_187614355.jpg
+│   ├── 1967-Heads_188243052.jpg
+│   ├── 1967-Heads_190671330.jpg
+│   ├── 1967-Heads_191069557.jpg
+│   ├── 1967-Heads_191867597.jpg
+│   ├── 1967-Heads_191867603.jpg
+│   ├── 1967-Heads_194704025.jpg
+│   ├── 1967-Heads_194764910.jpg
+│   ├── 1967-Heads_203506692.jpg
+│   ├── 1967-Heads_206429188.jpg
+│   ├── 1967-Heads_208832242.jpg
+│   ├── 1967-Heads_210193037.jpg
+│   ├── 1967-Heads_212088805.jpg
+│   ├── 1967-Heads_217892758.jpg
+│   ├── 1967-Heads_223229507.jpg
+│   ├── 1967-Heads_224826174.jpg
+│   ├── 1967-Heads_227754727.jpg
+│   ├── 1967-Heads_227754732.jpg
+│   ├── 1967-Heads_228352808.jpg
+│   ├── 1967-Heads_230757989.jpg
+│   ├── 1967-Heads_232682771.jpg
+│   ├── 1967-Heads_233107903.jpg
+│   ├── 1967-Heads_235223511.jpg
+│   ├── 1967-Heads_235223663.jpg
+│   ├── 1967-Heads_236975383.jpg
+│   ├── 1967-Heads_237393836.jpg
+│   ├── 1967-Heads_238776745.jpg
+│   ├── 1967-Heads_239583578.jpg
+│   ├── 1967-Heads_239928342.jpg
+│   ├── 1967-Heads_241032208.jpg
+│   ├── 1967-Heads_241866885.jpg
+│   ├── 1967-Heads_242247079.jpg
+│   ├── 1967-Heads_242908353.jpg
+│   ├── 1967-Heads_244174477.jpg
+│   ├── 1967-Heads_245972012.jpg
+│   ├── 1967-Heads_246572700.jpg
+│   ├── 1967-Heads_247469415.jpg
+│   ├── 1967-Heads_248616807.jpg
+│   ├── 1967-Heads_248620500.jpg
+│   ├── 1967-Heads_248878306.jpg
+│   ├── 1967-Heads_249478477.jpg
+│   ├── 1967-Heads_252099856.jpg
+│   ├── 1967-Heads_253102870.jpg
+│   ├── 1967-Heads_254698943.jpg
+│   ├── 1967-Heads_257011107.jpg
+│   ├── 1967-Heads_257323434.jpg
+│   ├── 1967-Heads_257687585.jpg
+│   ├── 1967-Heads_257687701.jpg
+│   ├── 1967-Heads_258835729.jpg
+│   ├── 1967-Heads_258927373.jpg
+│   ├── 1967-Heads_259146948.jpg
+│   ├── 1967-Heads_259146995.jpg
+│   ├── 1967-Heads_260085158.jpg
+│   ├── 1967-Heads_260372421.jpg
+│   ├── 1967-Heads_262817631.jpg
+│   ├── 1967-Heads_262818640.jpg
+│   ├── 1967-Heads_262819373.jpg
+│   ├── 1967-Heads_263100103.jpg
+│   ├── 1967-Heads_264583254.jpg
+│   ├── 1967-Heads_265815270.jpg
+│   ├── 1967-Heads_266768913.jpg
+│   ├── 1967-Heads_267815153.jpg
+│   ├── 1967-Heads_267818995.jpg
+│   ├── 1967-Heads_61803139.jpg
+│   ├── 1967-Heads_62506705.jpg
+│   ├── 1967-Heads_67696708.jpg
+│   └── 1967-Heads_80816521.jpg
+├── Testing
+│   ├── 1965
+│   │   ├── Heads_108913884.jpg
+│   │   ├── Heads_142497499.jpg
+│   │   ├── Heads_191069557.jpg
+│   │   ├── Heads_254698943.jpg
+│   │   └── Heads_80816521.jpg
+│   ├── 1966
+│   │   ├── Heads_132830959.jpg
+│   │   ├── Heads_168335466.jpg
+│   │   ├── Heads_241866885.jpg
+│   │   ├── Heads_264583254.jpg
+│   │   └── Heads_61803139.jpg
+│   ├── 1967
+│   │   ├── Heads_223351860.jpg
+│   │   ├── Heads_247469430.jpg
+│   │   ├── Heads_51650170.jpg
+│   │   ├── Heads_52821189.jpg
+│   │   └── Heads_58251745.jpg
+│   ├── 1968
+│   │   ├── Heads_157935721.jpg
+│   │   ├── Heads_176827926.jpg
+│   │   ├── Heads_177459866.jpg
+│   │   ├── Heads_217892758.jpg
+│   │   └── Heads_230757989.jpg
+│   ├── 1969
+│   │   ├── Heads_237393836.jpg
+│   │   ├── Heads_244174477.jpg
+│   │   ├── Heads_246572700.jpg
+│   │   ├── Heads_259146948.jpg
+│   │   └── Heads_259146995.jpg
+│   ├── 1970
+│   │   ├── Heads_228352808.jpg
+│   │   ├── Heads_235223511.jpg
+│   │   ├── Heads_241032208.jpg
+│   │   ├── Heads_257011107.jpg
+│   │   └── Heads_263100103.jpg
+│   ├── 1971
+│   │   ├── Heads_173559626.jpg
+│   │   ├── Heads_188243052.jpg
+│   │   ├── Heads_206429188.jpg
+│   │   ├── Heads_252099856.jpg
+│   │   └── Heads_258835729.jpg
+│   ├── 1972
+│   │   ├── Heads_203506692.jpg
+│   │   ├── Heads_210193037.jpg
+│   │   ├── Heads_235223663.jpg
+│   │   ├── Heads_260372421.jpg
+│   │   └── Heads_62506705.jpg
+│   ├── 1973
+│   │   ├── Heads_227754727.jpg
+│   │   ├── Heads_248620500.jpg
+│   │   └── Heads_248878306.jpg
+│   ├── 1974
+│   │   ├── Heads_190671330.jpg
+│   │   ├── Heads_223229507.jpg
+│   │   └── Heads_262818640.jpg
+│   ├── 1977
+│   │   ├── Heads_227754732.jpg
+│   │   ├── Heads_232682771.jpg
+│   │   ├── Heads_233107903.jpg
+│   │   ├── Heads_239583578.jpg
+│   │   └── Heads_265815270.jpg
+│   ├── 1978
+│   │   ├── Heads_178832859.jpg
+│   │   ├── Heads_194704025.jpg
+│   │   ├── Heads_245972012.jpg
+│   │   ├── Heads_257687585.jpg
+│   │   └── Heads_257687701.jpg
+│   ├── 1979
+│   │   ├── Heads_115875484.jpg
+│   │   ├── Heads_242908353.jpg
+│   │   ├── Heads_247469415.jpg
+│   │   ├── Heads_248616807.jpg
+│   │   └── Heads_258927373.jpg
+│   ├── 1980
+│   │   ├── Heads_124557673.jpg
+│   │   ├── Heads_143173290.jpg
+│   │   ├── Heads_208832242.jpg
+│   │   ├── Heads_262817631.jpg
+│   │   └── Heads_267815153.jpg
+│   ├── 1981
+│   │   ├── Heads_178850484.jpg
+│   │   ├── Heads_212088805.jpg
+│   │   ├── Heads_257323434.jpg
+│   │   ├── Heads_260085158.jpg
+│   │   └── Heads_266768913.jpg
+│   ├── 1982
+│   │   ├── Heads_177459944.jpg
+│   │   ├── Heads_224826174.jpg
+│   │   ├── Heads_238776745.jpg
+│   │   ├── Heads_262819373.jpg
+│   │   └── Heads_267818995.jpg
+│   ├── 1983
+│   │   ├── Heads_191867597.jpg
+│   │   ├── Heads_239928342.jpg
+│   │   ├── Heads_242247079.jpg
+│   │   ├── Heads_249478477.jpg
+│   │   └── Heads_67696708.jpg
+│   ├── BicentennialsP
+│   │   ├── Heads_187614355.jpg
+│   │   ├── Heads_191867603.jpg
+│   │   ├── Heads_194764910.jpg
+│   │   ├── Heads_236975383.jpg
+│   │   └── Heads_253102870.jpg
+│   └── HeadsQuartersAnnotations
+│       ├── Washington Quarter 148771_109 Obverse.txt
+│       ├── Washington Quarter 148771_121 Obverse.txt
+│       ├── Washington Quarter 148771_145 Obverse.txt
+│       ├── Washington Quarter 148771_170 Obverse.txt
+│       ├── Washington Quarter 148771_171 Obverse.txt
+│       ├── Washington Quarter 148771_172 Obverse.txt
+│       ├── Washington Quarter 148771_18 Obverse.txt
+│       ├── Washington Quarter 148771_190 Obverse.txt
+│       ├── Washington Quarter 148771_212 Obverse.txt
+│       ├── Washington Quarter 148771_255 Obverse.txt
+│       ├── Washington Quarter 148771_257 Obverse.txt
+│       ├── Washington Quarter 148771_266 Obverse.txt
+│       ├── Washington Quarter 148771_297 Obverse.txt
+│       ├── Washington Quarter 148771_43 Obverse.txt
+│       ├── Washington Quarter 148771_59 Obverse.txt
+│       ├── Washington Quarter 148771_6 Obverse.txt
+│       ├── Washington Quarter 148771_69 Obverse.txt
+│       ├── Washington Quarter 148771_81 Obverse.txt
+│       ├── Washington Quarter 148771_93 Obverse.txt
+│       ├── Washington Quarter 148771_94 Obverse.txt
+│       ├── Washington Quarter 218987_100 Obverse.txt
+│       ├── Washington Quarter 218987_109 Obverse.txt
+│       ├── Washington Quarter 218987_33 Obverse.txt
+│       ├── Washington Quarter 218987_78 Obverse.txt
+│       ├── Washington Quarter 218987_9 Obverse.txt
+│       ├── Washington Quarter 219644_120 Obverse.txt
+│       ├── Washington Quarter 219644_19 Obverse.txt
+│       ├── Washington Quarter 219644_38 Obverse.txt
+│       ├── Washington Quarter 219644_91 Obverse.txt
+│       ├── Washington Quarter 219644_92 Obverse.txt
+│       ├── Washington Quarter 72403_158 Obverse.txt
+│       ├── Washington Quarter 72403_235 Obverse.txt
+│       ├── Washington Quarter 72403_97 Obverse.txt
+│       └── classes.txt
+├── Training
+│   ├── 1965
+│   │   ├── Heads_101159261.jpg
+│   │   ├── Heads_142351242.jpg
+│   │   ├── Heads_145095257.jpg
+│   │   ├── Heads_146661176.jpg
+│   │   ├── Heads_153172824.jpg
+│   │   ├── Heads_188147876.jpg
+│   │   ├── Heads_191865157.jpg
+│   │   ├── Heads_197399827.jpg
+│   │   ├── Heads_199529514.jpg
+│   │   ├── Heads_202957328.jpg
+│   │   ├── Heads_208893291.jpg
+│   │   ├── Heads_217875418.jpg
+│   │   ├── Heads_223098492.jpg
+│   │   ├── Heads_223229520.jpg
+│   │   ├── Heads_223351494.jpg
+│   │   ├── Heads_229543038.jpg
+│   │   ├── Heads_231790024.jpg
+│   │   ├── Heads_235497510.jpg
+│   │   ├── Heads_238310679.jpg
+│   │   ├── Heads_241009376.jpg
+│   │   ├── Heads_241866869.jpg
+│   │   ├── Heads_242949644.jpg
+│   │   ├── Heads_246620742.jpg
+│   │   ├── Heads_246786200.jpg
+│   │   ├── Heads_257425313.jpg
+│   │   ├── Heads_264340952.jpg
+│   │   ├── Heads_267346791.jpg
+│   │   ├── Heads_49178071.jpg
+│   │   ├── Heads_58785172.jpg
+│   │   └── Heads_82159721.jpg
+│   ├── 1966
+│   │   ├── Heads_118312450.jpg
+│   │   ├── Heads_131407182.jpg
+│   │   ├── Heads_145092790.jpg
+│   │   ├── Heads_148993956.jpg
+│   │   ├── Heads_165683615.jpg
+│   │   ├── Heads_191866813.jpg
+│   │   ├── Heads_218164542.jpg
+│   │   ├── Heads_229463200.jpg
+│   │   ├── Heads_231003612.jpg
+│   │   ├── Heads_237113608.jpg
+│   │   ├── Heads_248878139.jpg
+│   │   ├── Heads_275977628.jpg
+│   │   └── Heads_68496566.jpg
+│   ├── 1967
+│   │   ├── Heads_178831980.jpg
+│   │   ├── Heads_236513609.jpg
+│   │   ├── Heads_242579094.jpg
+│   │   ├── Heads_242949643.jpg
+│   │   ├── Heads_255523313.jpg
+│   │   ├── Heads_255526470.jpg
+│   │   ├── Heads_267416929.jpg
+│   │   ├── Heads_267563898.jpg
+│   │   ├── Heads_54864206.jpg
+│   │   └── Heads_62506696.jpg
+│   ├── 1968
+│   │   ├── Heads_116784040.jpg
+│   │   ├── Heads_130749263.jpg
+│   │   ├── Heads_148977985.jpg
+│   │   ├── Heads_151936908.jpg
+│   │   ├── Heads_177578693.jpg
+│   │   ├── Heads_178832081.jpg
+│   │   ├── Heads_195553432.jpg
+│   │   ├── Heads_199499359.jpg
+│   │   ├── Heads_201953538.jpg
+│   │   ├── Heads_209981502.jpg
+│   │   ├── Heads_217829323.jpg
+│   │   ├── Heads_232682770.jpg
+│   │   ├── Heads_235223451.jpg
+│   │   ├── Heads_236569436.jpg
+│   │   ├── Heads_258462409.jpg
+│   │   ├── Heads_261805287.jpg
+│   │   └── Heads_90885535.jpg
+│   ├── 1969
+│   │   ├── Heads_132828919.jpg
+│   │   ├── Heads_153176090.jpg
+│   │   ├── Heads_156474887.jpg
+│   │   ├── Heads_160752915.jpg
+│   │   ├── Heads_178832120.jpg
+│   │   ├── Heads_183801239.jpg
+│   │   ├── Heads_197423767.jpg
+│   │   ├── Heads_202752620.jpg
+│   │   ├── Heads_212959679.jpg
+│   │   ├── Heads_217576770.jpg
+│   │   ├── Heads_235223474.jpg
+│   │   ├── Heads_239927257.jpg
+│   │   ├── Heads_239971068.jpg
+│   │   ├── Heads_241032195.jpg
+│   │   ├── Heads_259146949.jpg
+│   │   ├── Heads_259146974.jpg
+│   │   └── Heads_63417769.jpg
+│   ├── 1970
+│   │   ├── Heads_107481266.jpg
+│   │   ├── Heads_169766108.jpg
+│   │   ├── Heads_177459879.jpg
+│   │   ├── Heads_178832335.jpg
+│   │   ├── Heads_185635156.jpg
+│   │   ├── Heads_201951454.jpg
+│   │   ├── Heads_219629866.jpg
+│   │   ├── Heads_227754642.jpg
+│   │   ├── Heads_245099697.jpg
+│   │   ├── Heads_246771880.jpg
+│   │   ├── Heads_256513634.jpg
+│   │   ├── Heads_268355918.jpg
+│   │   └── Heads_273658864.jpg
+│   ├── 1971
+│   │   ├── Heads_168515883.jpg
+│   │   ├── Heads_173559607.jpg
+│   │   ├── Heads_193520533.jpg
+│   │   ├── Heads_194764725.jpg
+│   │   ├── Heads_199444231.jpg
+│   │   ├── Heads_208495570.jpg
+│   │   ├── Heads_212960124.jpg
+│   │   ├── Heads_219629842.jpg
+│   │   ├── Heads_222655670.jpg
+│   │   ├── Heads_223352813.jpg
+│   │   ├── Heads_228069723.jpg
+│   │   ├── Heads_230833185.jpg
+│   │   ├── Heads_235225372.jpg
+│   │   ├── Heads_239710858.jpg
+│   │   ├── Heads_243389938.jpg
+│   │   ├── Heads_243390018.jpg
+│   │   ├── Heads_255229805.jpg
+│   │   ├── Heads_265804010.jpg
+│   │   ├── Heads_265804029.jpg
+│   │   ├── Heads_266444282.jpg
+│   │   ├── Heads_268605348.jpg
+│   │   ├── Heads_53693895.jpg
+│   │   ├── Heads_55486541.jpg
+│   │   └── Heads_88342144.jpg
+│   ├── 1972
+│   │   ├── Heads_116130759.jpg
+│   │   ├── Heads_171395645.jpg
+│   │   ├── Heads_174593594.jpg
+│   │   ├── Heads_211099633.jpg
+│   │   ├── Heads_247714782.jpg
+│   │   ├── Heads_248878212.jpg
+│   │   ├── Heads_249528927.jpg
+│   │   ├── Heads_258114478.jpg
+│   │   ├── Heads_259597760.jpg
+│   │   └── Heads_61803166.jpg
+│   ├── 1973
+│   │   ├── Heads_190671373.jpg
+│   │   ├── Heads_194814181.jpg
+│   │   ├── Heads_250547034.jpg
+│   │   ├── Heads_275990427.jpg
+│   │   └── Heads_55801065.jpg
+│   ├── 1974
+│   │   ├── Heads_164861486.jpg
+│   │   ├── Heads_178832426.jpg
+│   │   ├── Heads_195520087.jpg
+│   │   ├── Heads_213287303.jpg
+│   │   ├── Heads_213507761.jpg
+│   │   └── Heads_248618410.jpg
+│   ├── 1977
+│   │   ├── Heads_164699105.jpg
+│   │   ├── Heads_204353790.jpg
+│   │   ├── Heads_209981415.jpg
+│   │   ├── Heads_213092712.jpg
+│   │   ├── Heads_230833237.jpg
+│   │   ├── Heads_237823994.jpg
+│   │   ├── Heads_240928663.jpg
+│   │   ├── Heads_254507445.jpg
+│   │   ├── Heads_258277528.jpg
+│   │   ├── Heads_262817470.jpg
+│   │   └── Heads_263873479.jpg
+│   ├── 1978
+│   │   ├── Heads_140831453.jpg
+│   │   ├── Heads_160431028.jpg
+│   │   ├── Heads_209982710.jpg
+│   │   ├── Heads_217402294.jpg
+│   │   ├── Heads_223352986.jpg
+│   │   ├── Heads_228230885.jpg
+│   │   ├── Heads_230922414.jpg
+│   │   ├── Heads_236836516.jpg
+│   │   ├── Heads_240928697.jpg
+│   │   ├── Heads_242882364.jpg
+│   │   ├── Heads_248616513.jpg
+│   │   ├── Heads_248901550.jpg
+│   │   ├── Heads_257687621.jpg
+│   │   ├── Heads_258795372.jpg
+│   │   └── Heads_258795393.jpg
+│   ├── 1979
+│   │   ├── Heads_178832932.jpg
+│   │   ├── Heads_191866541.jpg
+│   │   ├── Heads_194816243.jpg
+│   │   ├── Heads_199300884.jpg
+│   │   ├── Heads_205612554.jpg
+│   │   ├── Heads_210836150.jpg
+│   │   ├── Heads_210836152.jpg
+│   │   ├── Heads_210836155.jpg
+│   │   ├── Heads_210836212.jpg
+│   │   ├── Heads_230922356.jpg
+│   │   ├── Heads_238893581.jpg
+│   │   ├── Heads_242882367.jpg
+│   │   ├── Heads_277331530.jpg
+│   │   └── Heads_58060263.jpg
+│   ├── 1980
+│   │   ├── Heads_151375495.jpg
+│   │   ├── Heads_170819992.jpg
+│   │   ├── Heads_178837392.jpg
+│   │   ├── Heads_204194966.jpg
+│   │   ├── Heads_240670526.jpg
+│   │   ├── Heads_240928778.jpg
+│   │   ├── Heads_241866950.jpg
+│   │   ├── Heads_244723157.jpg
+│   │   ├── Heads_248810665.jpg
+│   │   ├── Heads_253551747.jpg
+│   │   ├── Heads_258448397.jpg
+│   │   ├── Heads_258927457.jpg
+│   │   ├── Heads_259394893.jpg
+│   │   ├── Heads_53378811.jpg
+│   │   └── Heads_62550859.jpg
+│   ├── 1981
+│   │   ├── Heads_178833122.jpg
+│   │   ├── Heads_199583922.jpg
+│   │   ├── Heads_218380808.jpg
+│   │   ├── Heads_233998657.jpg
+│   │   ├── Heads_240928816.jpg
+│   │   ├── Heads_241031921.jpg
+│   │   ├── Heads_252100002.jpg
+│   │   ├── Heads_254347037.jpg
+│   │   ├── Heads_255466039.jpg
+│   │   ├── Heads_58531353.jpg
+│   │   ├── Heads_58835142.jpg
+│   │   └── Heads_61043121.jpg
+│   ├── 1982
+│   │   ├── Heads_105200781.jpg
+│   │   ├── Heads_178833163.jpg
+│   │   ├── Heads_223353133.jpg
+│   │   ├── Heads_230453728.jpg
+│   │   ├── Heads_232777589.jpg
+│   │   ├── Heads_239809027.jpg
+│   │   ├── Heads_242882432.jpg
+│   │   └── Heads_254799990.jpg
+│   ├── 1983
+│   │   ├── Heads_134165882.jpg
+│   │   ├── Heads_140831451.jpg
+│   │   ├── Heads_176091815.jpg
+│   │   ├── Heads_191865228.jpg
+│   │   ├── Heads_196214111.jpg
+│   │   ├── Heads_202382704.jpg
+│   │   ├── Heads_202382712.jpg
+│   │   ├── Heads_202382726.jpg
+│   │   ├── Heads_203618148.jpg
+│   │   ├── Heads_204194499.jpg
+│   │   ├── Heads_205575041.jpg
+│   │   ├── Heads_205575116.jpg
+│   │   ├── Heads_213818046.jpg
+│   │   ├── Heads_215141268.jpg
+│   │   ├── Heads_219832105.jpg
+│   │   ├── Heads_225232805.jpg
+│   │   ├── Heads_231121912.jpg
+│   │   ├── Heads_234278405.jpg
+│   │   ├── Heads_246972384.jpg
+│   │   ├── Heads_249478555.jpg
+│   │   ├── Heads_250868850.jpg
+│   │   ├── Heads_253103253.jpg
+│   │   ├── Heads_253842456.jpg
+│   │   ├── Heads_257266775.jpg
+│   │   ├── Heads_258277536.jpg
+│   │   ├── Heads_49136155.jpg
+│   │   ├── Heads_52597468.jpg
+│   │   ├── Heads_57813368.jpg
+│   │   ├── Heads_62506728.jpg
+│   │   └── Heads_65871865.jpg
+│   ├── BicentennialsP
+│   │   ├── Heads_124364722.jpg
+│   │   ├── Heads_165859111.jpg
+│   │   ├── Heads_171395532.jpg
+│   │   ├── Heads_171516887.jpg
+│   │   ├── Heads_173559506.jpg
+│   │   ├── Heads_178832495.jpg
+│   │   ├── Heads_182945711.jpg
+│   │   ├── Heads_187728955.jpg
+│   │   ├── Heads_196787776.jpg
+│   │   ├── Heads_196861871.jpg
+│   │   ├── Heads_198420022.jpg
+│   │   ├── Heads_202950389.jpg
+│   │   ├── Heads_204890845.jpg
+│   │   ├── Heads_210103667.jpg
+│   │   ├── Heads_213405584.jpg
+│   │   ├── Heads_214923247.jpg
+│   │   ├── Heads_220019113.jpg
+│   │   ├── Heads_220652547.jpg
+│   │   ├── Heads_222910742.jpg
+│   │   ├── Heads_226934578.jpg
+│   │   ├── Heads_228618512.jpg
+│   │   ├── Heads_230582453.jpg
+│   │   ├── Heads_234766910.jpg
+│   │   ├── Heads_236209913.jpg
+│   │   ├── Heads_236412600.jpg
+│   │   ├── Heads_239710841.jpg
+│   │   ├── Heads_240928646.jpg
+│   │   ├── Heads_241866919.jpg
+│   │   ├── Heads_242246873.jpg
+│   │   ├── Heads_246951462.jpg
+│   │   ├── Heads_246951464.jpg
+│   │   ├── Heads_246951550.jpg
+│   │   ├── Heads_246951567.jpg
+│   │   ├── Heads_248022665.jpg
+│   │   ├── Heads_248618473.jpg
+│   │   ├── Heads_250868412.jpg
+│   │   ├── Heads_255229866.jpg
+│   │   ├── Heads_258350421.jpg
+│   │   ├── Heads_260098334.jpg
+│   │   ├── Heads_262462057.jpg
+│   │   ├── Heads_262817433.jpg
+│   │   ├── Heads_262933548.jpg
+│   │   ├── Heads_267398618.jpg
+│   │   ├── Heads_267818881.jpg
+│   │   ├── Heads_267828795.jpg
+│   │   ├── Heads_273748805.jpg
+│   │   ├── Heads_275977794.jpg
+│   │   └── Heads_62550872.jpg
+│   └── HeadsQuartersAnnotations
+│       ├── Washington Quarter 148771_0 Obverse.txt
+│       ├── Washington Quarter 148771_100 Obverse.txt
+│       ├── Washington Quarter 148771_102 Obverse.txt
+│       ├── Washington Quarter 148771_103 Obverse.txt
+│       ├── Washington Quarter 148771_106 Obverse.txt
+│       ├── Washington Quarter 148771_111 Obverse.txt
+│       ├── Washington Quarter 148771_112 Obverse.txt
+│       ├── Washington Quarter 148771_113 Obverse.txt
+│       ├── Washington Quarter 148771_114 Obverse.txt
+│       ├── Washington Quarter 148771_116 Obverse.txt
+│       ├── Washington Quarter 148771_117 Obverse.txt
+│       ├── Washington Quarter 148771_118 Obverse.txt
+│       ├── Washington Quarter 148771_119 Obverse.txt
+│       ├── Washington Quarter 148771_122 Obverse.txt
+│       ├── Washington Quarter 148771_124 Obverse.txt
+│       ├── Washington Quarter 148771_126 Obverse.txt
+│       ├── Washington Quarter 148771_13 Obverse.txt
+│       ├── Washington Quarter 148771_130 Obverse.txt
+│       ├── Washington Quarter 148771_132 Obverse.txt
+│       ├── Washington Quarter 148771_133 Obverse.txt
+│       ├── Washington Quarter 148771_135 Obverse.txt
+│       ├── Washington Quarter 148771_136 Obverse.txt
+│       ├── Washington Quarter 148771_138 Obverse.txt
+│       ├── Washington Quarter 148771_139 Obverse.txt
+│       ├── Washington Quarter 148771_141 Obverse.txt
+│       ├── Washington Quarter 148771_144 Obverse.txt
+│       ├── Washington Quarter 148771_146 Obverse.txt
+│       ├── Washington Quarter 148771_149 Obverse.txt
+│       ├── Washington Quarter 148771_15 Obverse.txt
+│       ├── Washington Quarter 148771_151 Obverse.txt
+│       ├── Washington Quarter 148771_152 Obverse.txt
+│       ├── Washington Quarter 148771_156 Obverse.txt
+│       ├── Washington Quarter 148771_160 Obverse.txt
+│       ├── Washington Quarter 148771_162 Obverse.txt
+│       ├── Washington Quarter 148771_164 Obverse.txt
+│       ├── Washington Quarter 148771_168 Obverse.txt
+│       ├── Washington Quarter 148771_173 Obverse.txt
+│       ├── Washington Quarter 148771_174 Obverse.txt
+│       ├── Washington Quarter 148771_177 Obverse.txt
+│       ├── Washington Quarter 148771_179 Obverse.txt
+│       ├── Washington Quarter 148771_180 Obverse.txt
+│       ├── Washington Quarter 148771_182 Obverse.txt
+│       ├── Washington Quarter 148771_183 Obverse.txt
+│       ├── Washington Quarter 148771_186 Obverse.txt
+│       ├── Washington Quarter 148771_188 Obverse.txt
+│       ├── Washington Quarter 148771_191 Obverse.txt
+│       ├── Washington Quarter 148771_193 Obverse.txt
+│       ├── Washington Quarter 148771_195 Obverse.txt
+│       ├── Washington Quarter 148771_197 Obverse.txt
+│       ├── Washington Quarter 148771_203 Obverse.txt
+│       ├── Washington Quarter 148771_204 Obverse.txt
+│       ├── Washington Quarter 148771_205 Obverse.txt
+│       ├── Washington Quarter 148771_210 Obverse.txt
+│       ├── Washington Quarter 148771_215 Obverse.txt
+│       ├── Washington Quarter 148771_216 Obverse.txt
+│       ├── Washington Quarter 148771_217 Obverse.txt
+│       ├── Washington Quarter 148771_220 Obverse.txt
+│       ├── Washington Quarter 148771_223 Obverse.txt
+│       ├── Washington Quarter 148771_225 Obverse.txt
+│       ├── Washington Quarter 148771_226 Obverse.txt
+│       ├── Washington Quarter 148771_229 Obverse.txt
+│       ├── Washington Quarter 148771_23 Obverse.txt
+│       ├── Washington Quarter 148771_232 Obverse.txt
+│       ├── Washington Quarter 148771_233 Obverse.txt
+│       ├── Washington Quarter 148771_234 Obverse.txt
+│       ├── Washington Quarter 148771_236 Obverse.txt
+│       ├── Washington Quarter 148771_237 Obverse.txt
+│       ├── Washington Quarter 148771_238 Obverse.txt
+│       ├── Washington Quarter 148771_242 Obverse.txt
+│       ├── Washington Quarter 148771_246 Obverse.txt
+│       ├── Washington Quarter 148771_247 Obverse.txt
+│       ├── Washington Quarter 148771_248 Obverse.txt
+│       ├── Washington Quarter 148771_249 Obverse.txt
+│       ├── Washington Quarter 148771_250 Obverse.txt
+│       ├── Washington Quarter 148771_251 Obverse.txt
+│       ├── Washington Quarter 148771_253 Obverse.txt
+│       ├── Washington Quarter 148771_254 Obverse.txt
+│       ├── Washington Quarter 148771_256 Obverse.txt
+│       ├── Washington Quarter 148771_258 Obverse.txt
+│       ├── Washington Quarter 148771_26 Obverse.txt
+│       ├── Washington Quarter 148771_263 Obverse.txt
+│       ├── Washington Quarter 148771_264 Obverse.txt
+│       ├── Washington Quarter 148771_267 Obverse.txt
+│       ├── Washington Quarter 148771_269 Obverse.txt
+│       ├── Washington Quarter 148771_27 Obverse.txt
+│       ├── Washington Quarter 148771_272 Obverse.txt
+│       ├── Washington Quarter 148771_273 Obverse.txt
+│       ├── Washington Quarter 148771_275 Obverse.txt
+│       ├── Washington Quarter 148771_278 Obverse.txt
+│       ├── Washington Quarter 148771_28 Obverse.txt
+│       ├── Washington Quarter 148771_281 Obverse.txt
+│       ├── Washington Quarter 148771_285 Obverse.txt
+│       ├── Washington Quarter 148771_286 Obverse.txt
+│       ├── Washington Quarter 148771_287 Obverse.txt
+│       ├── Washington Quarter 148771_293 Obverse.txt
+│       ├── Washington Quarter 148771_294 Obverse.txt
+│       ├── Washington Quarter 148771_295 Obverse.txt
+│       ├── Washington Quarter 148771_30 Obverse.txt
+│       ├── Washington Quarter 148771_33 Obverse.txt
+│       ├── Washington Quarter 148771_34 Obverse.txt
+│       ├── Washington Quarter 148771_39 Obverse.txt
+│       ├── Washington Quarter 148771_40 Obverse.txt
+│       ├── Washington Quarter 148771_44 Obverse.txt
+│       ├── Washington Quarter 148771_47 Obverse.txt
+│       ├── Washington Quarter 148771_49 Obverse.txt
+│       ├── Washington Quarter 148771_50 Obverse.txt
+│       ├── Washington Quarter 148771_51 Obverse.txt
+│       ├── Washington Quarter 148771_52 Obverse.txt
+│       ├── Washington Quarter 148771_53 Obverse.txt
+│       ├── Washington Quarter 148771_56 Obverse.txt
+│       ├── Washington Quarter 148771_57 Obverse.txt
+│       ├── Washington Quarter 148771_61 Obverse.txt
+│       ├── Washington Quarter 148771_62 Obverse.txt
+│       ├── Washington Quarter 148771_71 Obverse.txt
+│       ├── Washington Quarter 148771_72 Obverse.txt
+│       ├── Washington Quarter 148771_73 Obverse.txt
+│       ├── Washington Quarter 148771_82 Obverse.txt
+│       ├── Washington Quarter 148771_83 Obverse.txt
+│       ├── Washington Quarter 148771_85 Obverse.txt
+│       ├── Washington Quarter 148771_88 Obverse.txt
+│       ├── Washington Quarter 148771_90 Obverse.txt
+│       ├── Washington Quarter 148771_91 Obverse.txt
+│       ├── Washington Quarter 17345_1 Obverse.txt
+│       ├── Washington Quarter 17345_10 Obverse.txt
+│       ├── Washington Quarter 17345_16 Obverse.txt
+│       ├── Washington Quarter 17345_17 Obverse.txt
+│       ├── Washington Quarter 17345_18 Obverse.txt
+│       ├── Washington Quarter 17345_20 Obverse.txt
+│       ├── Washington Quarter 17345_21 Obverse.txt
+│       ├── Washington Quarter 17345_22 Obverse.txt
+│       ├── Washington Quarter 17345_23 Obverse.txt
+│       ├── Washington Quarter 17345_3 Obverse.txt
+│       ├── Washington Quarter 17345_33 Obverse.txt
+│       ├── Washington Quarter 17345_35 Obverse.txt
+│       ├── Washington Quarter 17345_37 Obverse.txt
+│       ├── Washington Quarter 17345_38 Obverse.txt
+│       ├── Washington Quarter 17345_39 Obverse.txt
+│       ├── Washington Quarter 17345_40 Obverse.txt
+│       ├── Washington Quarter 17345_41 Obverse.txt
+│       ├── Washington Quarter 17345_44 Obverse.txt
+│       ├── Washington Quarter 17345_45 Obverse.txt
+│       ├── Washington Quarter 17345_47 Obverse.txt
+│       ├── Washington Quarter 17345_5 Obverse.txt
+│       ├── Washington Quarter 17345_6 Obverse.txt
+│       ├── Washington Quarter 17345_8 Obverse.txt
+│       ├── Washington Quarter 218987_10 Obverse.txt
+│       ├── Washington Quarter 218987_101 Obverse.txt
+│       ├── Washington Quarter 218987_103 Obverse.txt
+│       ├── Washington Quarter 218987_106 Obverse.txt
+│       ├── Washington Quarter 218987_107 Obverse.txt
+│       ├── Washington Quarter 218987_11 Obverse.txt
+│       ├── Washington Quarter 218987_111 Obverse.txt
+│       ├── Washington Quarter 218987_112 Obverse.txt
+│       ├── Washington Quarter 218987_113 Obverse.txt
+│       ├── Washington Quarter 218987_12 Obverse.txt
+│       ├── Washington Quarter 218987_125 Obverse.txt
+│       ├── Washington Quarter 218987_13 Obverse.txt
+│       ├── Washington Quarter 218987_130 Obverse.txt
+│       ├── Washington Quarter 218987_133 Obverse.txt
+│       ├── Washington Quarter 218987_16 Obverse.txt
+│       ├── Washington Quarter 218987_20 Obverse.txt
+│       ├── Washington Quarter 218987_22 Obverse.txt
+│       ├── Washington Quarter 218987_23 Obverse.txt
+│       ├── Washington Quarter 218987_25 Obverse.txt
+│       ├── Washington Quarter 218987_27 Obverse.txt
+│       ├── Washington Quarter 218987_28 Obverse.txt
+│       ├── Washington Quarter 218987_30 Obverse.txt
+│       ├── Washington Quarter 218987_36 Obverse.txt
+│       ├── Washington Quarter 218987_37 Obverse.txt
+│       ├── Washington Quarter 218987_38 Obverse.txt
+│       ├── Washington Quarter 218987_44 Obverse.txt
+│       ├── Washington Quarter 218987_49 Obverse.txt
+│       ├── Washington Quarter 218987_5 Obverse.txt
+│       ├── Washington Quarter 218987_54 Obverse.txt
+│       ├── Washington Quarter 218987_60 Obverse.txt
+│       ├── Washington Quarter 218987_62 Obverse.txt
+│       ├── Washington Quarter 218987_65 Obverse.txt
+│       ├── Washington Quarter 218987_67 Obverse.txt
+│       ├── Washington Quarter 218987_68 Obverse.txt
+│       ├── Washington Quarter 218987_69 Obverse.txt
+│       ├── Washington Quarter 218987_7 Obverse.txt
+│       ├── Washington Quarter 218987_70 Obverse.txt
+│       ├── Washington Quarter 218987_77 Obverse.txt
+│       ├── Washington Quarter 218987_79 Obverse.txt
+│       ├── Washington Quarter 218987_87 Obverse.txt
+│       ├── Washington Quarter 218987_89 Obverse.txt
+│       ├── Washington Quarter 218987_92 Obverse.txt
+│       ├── Washington Quarter 218987_99 Obverse.txt
+│       ├── Washington Quarter 219644_0 Obverse.txt
+│       ├── Washington Quarter 219644_10 Obverse.txt
+│       ├── Washington Quarter 219644_100 Obverse.txt
+│       ├── Washington Quarter 219644_102 Obverse.txt
+│       ├── Washington Quarter 219644_105 Obverse.txt
+│       ├── Washington Quarter 219644_106 Obverse.txt
+│       ├── Washington Quarter 219644_108 Obverse.txt
+│       ├── Washington Quarter 219644_110 Obverse.txt
+│       ├── Washington Quarter 219644_111 Obverse.txt
+│       ├── Washington Quarter 219644_113 Obverse.txt
+│       ├── Washington Quarter 219644_114 Obverse.txt
+│       ├── Washington Quarter 219644_118 Obverse.txt
+│       ├── Washington Quarter 219644_12 Obverse.txt
+│       ├── Washington Quarter 219644_121 Obverse.txt
+│       ├── Washington Quarter 219644_123 Obverse.txt
+│       ├── Washington Quarter 219644_128 Obverse.txt
+│       ├── Washington Quarter 219644_130 Obverse.txt
+│       ├── Washington Quarter 219644_133 Obverse.txt
+│       ├── Washington Quarter 219644_134 Obverse.txt
+│       ├── Washington Quarter 219644_135 Obverse.txt
+│       ├── Washington Quarter 219644_136 Obverse.txt
+│       ├── Washington Quarter 219644_137 Obverse.txt
+│       ├── Washington Quarter 219644_138 Obverse.txt
+│       ├── Washington Quarter 219644_147 Obverse.txt
+│       ├── Washington Quarter 219644_148 Obverse.txt
+│       ├── Washington Quarter 219644_151 Obverse.txt
+│       ├── Washington Quarter 219644_152 Obverse.txt
+│       ├── Washington Quarter 219644_2 Obverse.txt
+│       ├── Washington Quarter 219644_21 Obverse.txt
+│       ├── Washington Quarter 219644_22 Obverse.txt
+│       ├── Washington Quarter 219644_26 Obverse.txt
+│       ├── Washington Quarter 219644_29 Obverse.txt
+│       ├── Washington Quarter 219644_3 Obverse.txt
+│       ├── Washington Quarter 219644_31 Obverse.txt
+│       ├── Washington Quarter 219644_33 Obverse.txt
+│       ├── Washington Quarter 219644_36 Obverse.txt
+│       ├── Washington Quarter 219644_46 Obverse.txt
+│       ├── Washington Quarter 219644_48 Obverse.txt
+│       ├── Washington Quarter 219644_49 Obverse.txt
+│       ├── Washington Quarter 219644_59 Obverse.txt
+│       ├── Washington Quarter 219644_6 Obverse.txt
+│       ├── Washington Quarter 219644_61 Obverse.txt
+│       ├── Washington Quarter 219644_65 Obverse.txt
+│       ├── Washington Quarter 219644_70 Obverse.txt
+│       ├── Washington Quarter 219644_73 Obverse.txt
+│       ├── Washington Quarter 219644_74 Obverse.txt
+│       ├── Washington Quarter 219644_76 Obverse.txt
+│       ├── Washington Quarter 219644_78 Obverse.txt
+│       ├── Washington Quarter 219644_8 Obverse.txt
+│       ├── Washington Quarter 219644_81 Obverse.txt
+│       ├── Washington Quarter 219644_82 Obverse.txt
+│       ├── Washington Quarter 219644_88 Obverse.txt
+│       ├── Washington Quarter 219644_94 Obverse.txt
+│       ├── Washington Quarter 219644_95 Obverse.txt
+│       ├── Washington Quarter 219644_98 Obverse.txt
+│       ├── Washington Quarter 219644_99 Obverse.txt
+│       └── classes.txt
+└── dataset.yml
+
+42 directories, 745 files

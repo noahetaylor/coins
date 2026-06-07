@@ -1,0 +1,8 @@
+folder=1970_D
+sample=img_0034.jpg
+raw_size=4656x3496
+label_cx=2280.00
+label_cy=1658.25
+label_r=1187.36
+avg_angle=279.85
+correction=-279.85

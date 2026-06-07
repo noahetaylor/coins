@@ -1,0 +1,8 @@
+folder=1974
+sample=img_0034.jpg
+raw_size=4656x3496
+label_cx=2280.00
+label_cy=1586.25
+label_r=1241.63
+avg_angle=314.65
+correction=-314.65

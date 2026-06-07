@@ -1,0 +1,8 @@
+folder=1965_1
+sample=img_0034.jpg
+raw_size=4656x3496
+label_cx=2288.00
+label_cy=1658.25
+label_r=1226.48
+avg_angle=351.64
+correction=-351.64

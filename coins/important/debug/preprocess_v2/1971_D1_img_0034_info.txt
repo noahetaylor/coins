@@ -1,0 +1,8 @@
+folder=1971_D1
+sample=img_0034.jpg
+raw_size=4656x3496
+label_cx=2284.00
+label_cy=1642.25
+label_r=1213.08
+avg_angle=321.15
+correction=-321.15

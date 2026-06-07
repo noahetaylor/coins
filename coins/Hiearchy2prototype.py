@@ -10,7 +10,7 @@ from ChartTraining import chartTraining
 
 # Settings
 image_size = 150
-num_epochs = 1
+num_epochs = 15
 batch_size = 32
 
 # Paths
