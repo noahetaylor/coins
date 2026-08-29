@@ -64,8 +64,9 @@ MODELS_DIR = IMPORTANT_DIR / "models"
 DEVICE = torch.device("cpu")        # the 3060's fan is dead - CPU only
 DUAL_DATE = "1776-1976"
 
-# Bands are ~2.88:1. Keep that aspect so digits are not squashed.
-IN_W, IN_H = 320, 112
+# Bands are ~2.64:1 under the corrected harvest geometry (half-width 0.58,
+# top 0.58, bottom 1.02). Keep that aspect so digits are not squashed.
+IN_W, IN_H = 320, 120
 N_POS, N_CLS = 4, 10
 
 
@@ -105,6 +106,42 @@ def split_by_coin(records, val_frac=0.2, seed=0):
     return train, val, train_coins, val_coins
 
 
+def k_fold_by_coin(records, k=5, seed=0):
+    """
+    K coin-level folds, stratified on the unit digit.
+
+    Every coin lands in exactly one validation fold, so pooling the folds'
+    predictions gives an out-of-fold prediction for ALL coins rather than
+    the ~150 a single split can measure. That is the point: one 20% split
+    resolves accuracy to about +/-0.7% per coin, which is too coarse to
+    tell a real improvement from noise.
+    """
+    by_coin = defaultdict(list)
+    for r in records:
+        by_coin[r["coin_id"]].append(r)
+
+    strata = defaultdict(list)
+    for coin, rs in by_coin.items():
+        strata[rs[0]["digits"][3]].append(coin)
+
+    rng = random.Random(seed)
+    assign = {}
+    for digit, coins in sorted(strata.items()):
+        coins = sorted(coins)
+        rng.shuffle(coins)
+        # Deal this stratum round-robin so each fold gets a share of it.
+        for i, coin in enumerate(coins):
+            assign[coin] = i % k
+
+    folds = []
+    for f in range(k):
+        val_coins = {c for c, i in assign.items() if i == f}
+        train = [r for r in records if r["coin_id"] not in val_coins]
+        val = [r for r in records if r["coin_id"] in val_coins]
+        folds.append((train, val, val_coins))
+    return folds
+
+
 TRAIN_TF = transforms.Compose([
     transforms.Resize((IN_H, IN_W)),
     # No horizontal flip - it would mirror the digits.
@@ -118,17 +155,54 @@ TRAIN_TF = transforms.Compose([
     transforms.RandomErasing(p=0.25, scale=(0.02, 0.08)),
 ])
 
+# Wear / studio simulation.
+#
+# Cross-validation showed every error lands on 2026data (86.3% per coin)
+# while pcgs, crops and supers all sit at 100%. The cause is not sampling
+# frequency - 2026data is already 28.4% of training bands - it is coin
+# DIVERSITY: only 51 of 751 coins come from the studio rig, and those are
+# circulated pocket change while the scraped sources are mostly graded,
+# uncirculated coins with crisp relief.
+#
+# Oversampling 2026data would just replay the same 51 coins. Instead,
+# degrade the 686 pristine coins toward what the rig actually produces:
+# soft relief, low contrast, and heavy colour casts from the LED sweep.
+# That turns abundant pristine data into training signal for the domain
+# that actually matters.
+WEAR_TF = transforms.Compose([
+    transforms.Resize((IN_H, IN_W)),
+    transforms.RandomAffine(degrees=6, translate=(0.03, 0.06),
+                            scale=(0.94, 1.06), shear=4, fill=0),
+    # Soften relief the way a worn coin and a soft rig image both do.
+    transforms.RandomApply(
+        [transforms.GaussianBlur(3, sigma=(0.4, 1.5))], p=0.55),
+    # Contrast is skewed downward, not symmetric - worn dates lose contrast,
+    # they do not gain it. hue at the limit reproduces the LED colour sweep.
+    transforms.ColorJitter(brightness=0.5, contrast=(0.3, 1.15),
+                           saturation=0.6, hue=0.5),
+    transforms.RandomGrayscale(p=0.25),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    # Deliberately NO RandomErasing here. A patch that lands on a digit
+    # hides the evidence while still demanding the right answer, which
+    # trains the model to guess from context - exactly the observed failure
+    # mode, where all 6 bands of a coin agree on the same wrong year.
+])
+
 EVAL_TF = transforms.Compose([
     transforms.Resize((IN_H, IN_W)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
 ])
 
+# Set from main(); read by BandDataset in worker processes after fork.
+ACTIVE_TRAIN_TF = TRAIN_TF
+
 
 class BandDataset(Dataset):
     def __init__(self, records, train):
         self.records = records
-        self.tf = TRAIN_TF if train else EVAL_TF
+        self.tf = ACTIVE_TRAIN_TF if train else EVAL_TF
 
     def __len__(self):
         return len(self.records)
@@ -215,6 +289,144 @@ def print_confusion(cm):
         print(f"   {t}: {row}  {acc:>6.1%} {n:>4}{flag}")
 
 
+def predict_records(model, records, workers=4, batch_size=32):
+    """Predicted 4-digit string for each record, in order."""
+    model.eval()
+    loader = DataLoader(BandDataset(records, False), batch_size,
+                        shuffle=False, num_workers=workers)
+    out = []
+    with torch.no_grad():
+        for x, _ in loader:
+            for row in model(x).argmax(dim=2):
+                out.append("".join(str(int(d)) for d in row))
+    return out
+
+
+def coin_level_accuracy(records, predictions):
+    """Majority vote over each coin's bands - the production read."""
+    votes = defaultdict(list)
+    for r, p in zip(records, predictions):
+        votes[r["coin_id"]].append((r["digits"], p))
+    correct, wrong = 0, []
+    for coin, items in votes.items():
+        truth = items[0][0]
+        maj = Counter(p for _, p in items).most_common(1)[0][0]
+        if maj == truth:
+            correct += 1
+        else:
+            wrong.append((coin, truth, maj, len(items)))
+    return correct / len(votes), wrong, len(votes)
+
+
+def train_one(train_recs, val_recs, args, tag=""):
+    """Train from scratch, return (best_year_acc, best_state, best_preds)."""
+    model = DateReader().to(DEVICE)
+    train_loader = DataLoader(BandDataset(train_recs, True), args.batch_size,
+                              sampler=unit_digit_sampler(train_recs),
+                              num_workers=args.workers)
+    val_loader = DataLoader(BandDataset(val_recs, False), args.batch_size,
+                            shuffle=False, num_workers=args.workers)
+    criterion = nn.CrossEntropyLoss(label_smoothing=0.05)
+    best, best_state = -1.0, None
+    opt = sched = None
+
+    for epoch in range(1, args.epochs + 1):
+        frozen = epoch <= args.freeze_epochs
+        for p in model.trunk.parameters():
+            p.requires_grad = not frozen
+        params = [p for p in model.parameters() if p.requires_grad]
+        if epoch == 1 or epoch == args.freeze_epochs + 1:
+            lr = args.lr * (3 if frozen else 1)
+            opt = torch.optim.AdamW(params, lr=lr, weight_decay=1e-4)
+            sched = torch.optim.lr_scheduler.CosineAnnealingLR(
+                opt, T_max=max(1, (args.freeze_epochs if frozen
+                                   else args.epochs - args.freeze_epochs)))
+
+        model.train()
+        running = 0.0
+        for x, y in train_loader:
+            opt.zero_grad()
+            out = model(x)
+            loss = sum(criterion(out[:, p], y[:, p]) for p in range(N_POS))
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(params, 2.0)
+            opt.step()
+            running += loss.item() * x.size(0)
+        sched.step()
+
+        pos, year, _, _ = evaluate(model, val_loader)
+        if year > best:
+            best = year
+            best_state = {k: v.clone() for k, v in model.state_dict().items()}
+        if args.verbose:
+            print(f"  {tag}epoch {epoch:>3}/{args.epochs} "
+                  f"[{'frozen' if frozen else 'full  '}] "
+                  f"loss {running/len(train_recs):.3f}  "
+                  f"pos2 {pos[2]:.1%} pos3 {pos[3]:.1%}  year {year:.1%}")
+
+    model.load_state_dict(best_state)
+    return best, best_state, predict_records(model, val_recs, args.workers,
+                                             args.batch_size)
+
+
+def run_cross_validation(records, args):
+    folds = k_fold_by_coin(records, args.folds, args.seed)
+    oof_recs, oof_preds, fold_band, fold_coin = [], [], [], []
+
+    for i, (tr, va, val_coins) in enumerate(folds, 1):
+        print(f"\nfold {i}/{args.folds}: train {len(tr)} bands / "
+              f"{len({r['coin_id'] for r in tr})} coins  |  "
+              f"val {len(va)} bands / {len(val_coins)} coins")
+        band_acc, _, preds = train_one(tr, va, args, tag=f"f{i} ")
+        coin_acc, wrong, n_coins = coin_level_accuracy(va, preds)
+        fold_band.append(band_acc)
+        fold_coin.append(coin_acc)
+        oof_recs.extend(va)
+        oof_preds.extend(preds)
+        print(f"  -> band {band_acc:.1%}   coin {coin_acc:.1%} "
+              f"({n_coins - len(wrong)}/{n_coins})")
+
+    band = np.array(fold_band)
+    coin = np.array(fold_coin)
+    print("\n" + "=" * 62)
+    print(f"{args.folds}-FOLD CROSS-VALIDATION")
+    print("=" * 62)
+    print(f"per-band year : {band.mean():.1%}  +/- {band.std():.1%}   "
+          f"folds {', '.join(f'{b:.1%}' for b in band)}")
+    print(f"per-coin year : {coin.mean():.1%}  +/- {coin.std():.1%}   "
+          f"folds {', '.join(f'{c:.1%}' for c in coin)}")
+
+    # Pooled out-of-fold: every coin now has a held-out prediction.
+    acc, wrong, n = coin_level_accuracy(oof_recs, oof_preds)
+    band_ok = sum(1 for r, p in zip(oof_recs, oof_preds) if p == r["digits"])
+    print(f"\npooled out-of-fold over ALL data:")
+    print(f"  bands {band_ok}/{len(oof_recs)} = {band_ok/len(oof_recs):.1%}")
+    print(f"  coins {n - len(wrong)}/{n} = {acc:.1%}")
+
+    by_source = defaultdict(lambda: [0, 0])
+    for r, p in zip(oof_recs, oof_preds):
+        by_source[r["source"]][1] += 1
+        by_source[r["source"]][0] += (p == r["digits"])
+    print("\n  per-source band accuracy:")
+    for s, (ok, tot) in sorted(by_source.items()):
+        print(f"    {s:<10} {ok:>4}/{tot:<4} = {ok/tot:.1%}")
+
+    print(f"\n  coin-level failures ({len(wrong)}):")
+    for coin_id, truth, got, nb in sorted(wrong):
+        print(f"    {coin_id:<40} {truth} -> {got}  ({nb} bands)")
+
+    out = args.out.with_name("cross_val_report.json")
+    out.write_text(json.dumps({
+        "folds": args.folds, "seed": args.seed,
+        "per_band_mean": float(band.mean()), "per_band_std": float(band.std()),
+        "per_coin_mean": float(coin.mean()), "per_coin_std": float(coin.std()),
+        "pooled_band_acc": band_ok / len(oof_recs), "pooled_coin_acc": acc,
+        "failures": [{"coin_id": c, "true": t, "pred": g, "bands": n}
+                     for c, t, g, n in sorted(wrong)],
+    }, indent=2))
+    print(f"\nwrote {out}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--epochs", type=int, default=30)
@@ -226,13 +438,32 @@ def main():
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--out", type=Path, default=MODELS_DIR / "date_reader_v1.pth")
     ap.add_argument("--eval-only", type=Path)
+    ap.add_argument("--folds", type=int, default=0,
+                    help="run K-fold coin-level cross-validation instead of a "
+                         "single split (5 is a sensible value)")
+    ap.add_argument("--verbose", action="store_true",
+                    help="print every epoch during cross-validation")
+    ap.add_argument("--wear-aug", action="store_true",
+                    help="degrade pristine coins toward studio-rig conditions "
+                         "(blur, low contrast, heavy colour cast)")
     args = ap.parse_args()
+
+    if args.wear_aug:
+        global ACTIVE_TRAIN_TF
+        ACTIVE_TRAIN_TF = WEAR_TF
+        print("augmentation: WEAR (studio-domain simulation)")
 
     torch.manual_seed(args.seed)
     random.seed(args.seed)
     np.random.seed(args.seed)
 
     records = load_records()
+
+    if args.folds:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        run_cross_validation(records, args)
+        return
+
     train_recs, val_recs, train_coins, val_coins = split_by_coin(
         records, args.val_frac, args.seed)
 

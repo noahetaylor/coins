@@ -80,11 +80,21 @@ CROP_LABELS = IMPORTANT_DIR / "labels" / "crop_labels.json"
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png"}
 
 # Date band geometry, in units of coin radius r, relative to coin centre.
-# Deliberately generous: better to include the rim and some bust than to
-# clip a digit. Tighten later once a detector is running.
-BAND_TOP = 0.68
-BAND_BOT = 1.00
-BAND_HALF_W = 0.46
+#
+# The date sits on an ARC, so its outer digits ride higher than its middle
+# ones. The original window (top 0.68, half-width 0.46) was tight enough
+# that on coins whose centre estimate drifted, the first or last digit was
+# clipped off the TOP edge - not the side. That silently amputated a digit
+# on several studio coins and the reader confidently mis-read them
+# (1968 -> 1976, 1997 -> 1998) because the evidence genuinely was not in
+# the image.
+#
+# Widening alone does not fix it; the top edge has to come up. Going much
+# past top=0.55 starts pulling in "IN GOD WE TRUST" and the bust, which is
+# distractor content, so this is about as generous as is useful.
+BAND_TOP = 0.58
+BAND_BOT = 1.02
+BAND_HALF_W = 0.58
 
 # Bicentennial quarters carry the dual date "1776-1976".
 DUAL_DATE = "1776-1976"
