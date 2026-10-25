@@ -61,12 +61,18 @@ BANDS_ROOT = PROJECT_ROOT / "data" / "coins" / "DateBands"
 MANIFEST = BANDS_ROOT / "manifest.json"
 MODELS_DIR = IMPORTANT_DIR / "models"
 
-DEVICE = torch.device("cpu")        # the 3060's fan is dead - CPU only
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+PIN = DEVICE.type == "cuda"
 DUAL_DATE = "1776-1976"
 
 # Bands are ~2.64:1 under the corrected harvest geometry (half-width 0.58,
 # top 0.58, bottom 1.02). Keep that aspect so digits are not squashed.
-IN_W, IN_H = 320, 120
+# Overridable with --in-size WxH. A 6-point resolution sweep on 2026-08-29
+# (5-fold CV, wear-aug, see models/resolution_sweep/) found 448x168 is the
+# peak: +0.74% pooled per-band over 320x120, and accuracy falls off past it
+# (1280x480 is -3.1%, with 3x the fold variance) - more pixels feeds the
+# augmentation pipeline more room to distort, not more signal.
+IN_W, IN_H = 448, 168
 N_POS, N_CLS = 4, 10
 
 
@@ -142,8 +148,20 @@ def k_fold_by_coin(records, k=5, seed=0):
     return folds
 
 
+class DynamicResize:
+    """Resize to the current IN_H/IN_W.
+
+    The Compose objects below are built at import time, so a plain
+    transforms.Resize would bake in whatever the size was then and silently
+    ignore --in-size. This reads the module globals at call time instead.
+    """
+
+    def __call__(self, img):
+        return transforms.functional.resize(img, [IN_H, IN_W])
+
+
 TRAIN_TF = transforms.Compose([
-    transforms.Resize((IN_H, IN_W)),
+    DynamicResize(),
     # No horizontal flip - it would mirror the digits.
     transforms.RandomAffine(degrees=6, translate=(0.03, 0.06),
                             scale=(0.94, 1.06), shear=4, fill=0),
@@ -170,7 +188,7 @@ TRAIN_TF = transforms.Compose([
 # That turns abundant pristine data into training signal for the domain
 # that actually matters.
 WEAR_TF = transforms.Compose([
-    transforms.Resize((IN_H, IN_W)),
+    DynamicResize(),
     transforms.RandomAffine(degrees=6, translate=(0.03, 0.06),
                             scale=(0.94, 1.06), shear=4, fill=0),
     # Soften relief the way a worn coin and a soft rig image both do.
@@ -190,7 +208,7 @@ WEAR_TF = transforms.Compose([
 ])
 
 EVAL_TF = transforms.Compose([
-    transforms.Resize((IN_H, IN_W)),
+    DynamicResize(),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
 ])
@@ -224,6 +242,23 @@ def unit_digit_sampler(records):
 # ---------------------------------------------------------------------------
 # Model
 # ---------------------------------------------------------------------------
+
+def save_checkpoint(model, path):
+    """Bundle in_size with the weights so a resolution change can't silently
+    desync a checkpoint from the preprocessing that reads it."""
+    torch.save({"state_dict": model.state_dict(), "in_size": [IN_W, IN_H]}, path)
+
+
+def load_checkpoint(model, path, device=None):
+    """Returns the (w, h) the checkpoint was trained at, or None for legacy
+    raw-state-dict checkpoints saved before in_size was tracked."""
+    ck = torch.load(path, map_location=device or DEVICE, weights_only=False)
+    if isinstance(ck, dict) and "state_dict" in ck:
+        model.load_state_dict(ck["state_dict"])
+        return ck.get("in_size")
+    model.load_state_dict(ck)
+    return None
+
 
 class DateReader(nn.Module):
     """
@@ -268,9 +303,10 @@ def evaluate(model, loader):
     confusion = np.zeros((N_CLS, N_CLS), dtype=np.int64)   # unit digit
     with torch.no_grad():
         for x, y in loader:
+            x, y = x.to(DEVICE, non_blocking=PIN), y.to(DEVICE, non_blocking=PIN)
             pred = model(x).argmax(dim=2)
             hit = (pred == y)
-            pos_correct += hit.sum(dim=0).numpy()
+            pos_correct += hit.sum(dim=0).cpu().numpy()
             year_correct += hit.all(dim=1).sum().item()
             total += y.size(0)
             for t, p in zip(y[:, 3].tolist(), pred[:, 3].tolist()):
@@ -293,10 +329,11 @@ def predict_records(model, records, workers=4, batch_size=32):
     """Predicted 4-digit string for each record, in order."""
     model.eval()
     loader = DataLoader(BandDataset(records, False), batch_size,
-                        shuffle=False, num_workers=workers)
+                        shuffle=False, num_workers=workers, pin_memory=PIN)
     out = []
     with torch.no_grad():
         for x, _ in loader:
+            x = x.to(DEVICE, non_blocking=PIN)
             for row in model(x).argmax(dim=2):
                 out.append("".join(str(int(d)) for d in row))
     return out
@@ -323,9 +360,9 @@ def train_one(train_recs, val_recs, args, tag=""):
     model = DateReader().to(DEVICE)
     train_loader = DataLoader(BandDataset(train_recs, True), args.batch_size,
                               sampler=unit_digit_sampler(train_recs),
-                              num_workers=args.workers)
+                              num_workers=args.workers, pin_memory=PIN)
     val_loader = DataLoader(BandDataset(val_recs, False), args.batch_size,
-                            shuffle=False, num_workers=args.workers)
+                            shuffle=False, num_workers=args.workers, pin_memory=PIN)
     criterion = nn.CrossEntropyLoss(label_smoothing=0.05)
     best, best_state = -1.0, None
     opt = sched = None
@@ -345,6 +382,7 @@ def train_one(train_recs, val_recs, args, tag=""):
         model.train()
         running = 0.0
         for x, y in train_loader:
+            x, y = x.to(DEVICE, non_blocking=PIN), y.to(DEVICE, non_blocking=PIN)
             opt.zero_grad()
             out = model(x)
             loss = sum(criterion(out[:, p], y[:, p]) for p in range(N_POS))
@@ -418,6 +456,8 @@ def run_cross_validation(records, args):
     out = args.out.with_name("cross_val_report.json")
     out.write_text(json.dumps({
         "folds": args.folds, "seed": args.seed,
+        "in_w": IN_W, "in_h": IN_H, "wear_aug": bool(args.wear_aug),
+        "epochs": args.epochs,
         "per_band_mean": float(band.mean()), "per_band_std": float(band.std()),
         "per_coin_mean": float(coin.mean()), "per_coin_std": float(coin.std()),
         "pooled_band_acc": band_ok / len(oof_recs), "pooled_coin_acc": acc,
@@ -443,10 +483,18 @@ def main():
                          "single split (5 is a sensible value)")
     ap.add_argument("--verbose", action="store_true",
                     help="print every epoch during cross-validation")
+    ap.add_argument("--in-size", type=str, default=None, metavar="WxH",
+                    help="model input resolution, e.g. 640x240 (default "
+                         "320x120). Native bands are 1346-1674px wide.")
     ap.add_argument("--wear-aug", action="store_true",
                     help="degrade pristine coins toward studio-rig conditions "
                          "(blur, low contrast, heavy colour cast)")
     args = ap.parse_args()
+
+    if args.in_size:
+        global IN_W, IN_H
+        IN_W, IN_H = (int(v) for v in args.in_size.lower().split("x"))
+        print(f"input resolution: {IN_W}x{IN_H}")
 
     if args.wear_aug:
         global ACTIVE_TRAIN_TF
@@ -477,14 +525,17 @@ def main():
 
     train_loader = DataLoader(BandDataset(train_recs, True), args.batch_size,
                               sampler=unit_digit_sampler(train_recs),
-                              num_workers=args.workers)
+                              num_workers=args.workers, pin_memory=PIN)
     val_loader = DataLoader(BandDataset(val_recs, False), args.batch_size,
-                            shuffle=False, num_workers=args.workers)
+                            shuffle=False, num_workers=args.workers, pin_memory=PIN)
 
     model = DateReader().to(DEVICE)
 
     if args.eval_only:
-        model.load_state_dict(torch.load(args.eval_only, map_location=DEVICE))
+        ck_size = load_checkpoint(model, args.eval_only)
+        if ck_size and tuple(ck_size) != (IN_W, IN_H):
+            print(f"warning: checkpoint trained at {ck_size[0]}x{ck_size[1]}, "
+                  f"evaluating at {IN_W}x{IN_H} - pass matching --in-size")
         pos, year, n, cm = evaluate(model, val_loader)
         print(f"\npos2 {pos[2]:.1%}  pos3 {pos[3]:.1%}  year {year:.1%}  (n={n})")
         print_confusion(cm)
@@ -510,6 +561,7 @@ def main():
         model.train()
         running = 0.0
         for x, y in train_loader:
+            x, y = x.to(DEVICE, non_blocking=PIN), y.to(DEVICE, non_blocking=PIN)
             opt.zero_grad()
             out = model(x)
             loss = sum(criterion(out[:, p], y[:, p]) for p in range(N_POS))
@@ -528,7 +580,7 @@ def main():
 
         if year > best:
             best = year
-            torch.save(model.state_dict(), args.out)
+            save_checkpoint(model, args.out)
             split_meta = {"train_coins": sorted(train_coins),
                           "val_coins": sorted(val_coins),
                           "seed": args.seed, "val_frac": args.val_frac,
@@ -536,7 +588,7 @@ def main():
             args.out.with_suffix(".split.json").write_text(json.dumps(split_meta, indent=2))
 
     print(f"\nbest year accuracy {best:.1%} -> {args.out}")
-    model.load_state_dict(torch.load(args.out, map_location=DEVICE))
+    load_checkpoint(model, args.out)
     pos, year, n, cm = evaluate(model, val_loader)
     print(f"final: pos2 {pos[2]:.1%}  pos3 {pos[3]:.1%}  year {year:.1%}  (n={n})")
     print_confusion(cm)

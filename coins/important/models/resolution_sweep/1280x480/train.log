@@ -1,0 +1,52 @@
+input resolution: 1280x480
+augmentation: WEAR (studio-domain simulation)
+
+fold 1/5: train 872 bands / 597 coins  |  val 204 bands / 154 coins
+  -> band 92.2%   coin 98.1% (151/154)
+
+fold 2/5: train 853 bands / 598 coins  |  val 223 bands / 153 coins
+  -> band 89.2%   coin 97.4% (149/153)
+
+fold 3/5: train 860 bands / 600 coins  |  val 216 bands / 151 coins
+  -> band 94.0%   coin 98.7% (149/151)
+
+fold 4/5: train 859 bands / 604 coins  |  val 217 bands / 147 coins
+  -> band 96.3%   coin 99.3% (146/147)
+
+fold 5/5: train 860 bands / 605 coins  |  val 216 bands / 146 coins
+  -> band 87.5%   coin 96.6% (141/146)
+
+==============================================================
+5-FOLD CROSS-VALIDATION
+==============================================================
+per-band year : 91.8%  +/- 3.2%   folds 92.2%, 89.2%, 94.0%, 96.3%, 87.5%
+per-coin year : 98.0%  +/- 1.0%   folds 98.1%, 97.4%, 98.7%, 99.3%, 96.6%
+
+pooled out-of-fold over ALL data:
+  bands 988/1076 = 91.8%
+  coins 736/751 = 98.0%
+
+  per-source band accuracy:
+    2026data    218/306  = 71.2%
+    crops       331/331  = 100.0%
+    pcgs        355/355  = 100.0%
+    supers       84/84   = 100.0%
+
+  coin-level failures (15):
+    2026data/1968                            1968 -> 1976  (6 bands)
+    2026data/1970_D1                         1970 -> 1968  (6 bands)
+    2026data/1978_D                          1978 -> 1997  (6 bands)
+    2026data/1978_D1                         1978 -> 1984  (6 bands)
+    2026data/1984_P                          1984 -> 1983  (6 bands)
+    2026data/1985_D                          1985 -> 1983  (6 bands)
+    2026data/1988_D1                         1988 -> 1983  (6 bands)
+    2026data/1989_D                          1989 -> 1988  (6 bands)
+    2026data/1989_D1                         1989 -> 1998  (6 bands)
+    2026data/1992_D1                         1992 -> 1982  (6 bands)
+    2026data/1993_D1                         1993 -> 1988  (6 bands)
+    2026data/1995_D                          1995 -> 1998  (6 bands)
+    2026data/1995_D1                         1995 -> 1999  (6 bands)
+    2026data/1996_D                          1996 -> 1964  (6 bands)
+    2026data/1998_D                          1998 -> 1985  (6 bands)
+
+wrote /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/1280x480/cross_val_report.json

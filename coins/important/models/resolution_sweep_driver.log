@@ -1,0 +1,40 @@
+[320x120] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 320x120 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/320x120/date_reader.pth
+[320x120] done in 9.6min  band 94.89%  coin 98.80%
+[448x168] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 448x168 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/448x168/date_reader.pth
+[448x168] done in 12.9min  band 95.63%  coin 98.93%
+[640x240] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 640x240 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/640x240/date_reader.pth
+[640x240] done in 20.8min  band 93.87%  coin 98.54%
+[800x304] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 800x304 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/800x304/date_reader.pth
+[800x304] done in 29.1min  band 94.42%  coin 98.67%
+[960x360] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 960x360 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/960x360/date_reader.pth
+[960x360] done in 38.5min  band 94.05%  coin 98.67%
+[1280x480] starting: /home/noah/projects/image-identifier/.venv/bin/python /home/noah/projects/image-identifier/coins/important/train_date_reader_v1.py --folds 5 --seed 0 --epochs 30 --wear-aug --workers 4 --in-size 1280x480 --out /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/1280x480/date_reader.pth
+[1280x480] done in 239.6min  band 91.82%  coin 98.00%
+
+==============================================================================
+RESOLUTION SWEEP  (5-fold coin-level CV, wear-aug, 30 epochs, seed 0)
+==============================================================================
+      res  cols/digit   band mean  band std  pooled band  pooled coin   hours
+  320x120         2.5     94.88%    0.71%      94.89%      98.80%    0.2h
+  448x168         3.5     95.61%    1.38%      95.63%      98.93%    0.2h
+  640x240         5.0     93.88%    0.99%      93.87%      98.54%    0.3h
+  800x304         6.2     94.44%    1.68%      94.42%      98.67%    0.5h
+  960x360         7.5     94.07%    1.18%      94.05%      98.67%    0.6h
+ 1280x480        10.0     91.84%    3.17%      91.82%      98.00%    4.0h
+
+delta vs 320x120 baseline (pooled per-band):
+    448x168 +0.74%
+    640x240 -1.02%
+    800x304 -0.46%  (within fold noise)
+    960x360 -0.84%
+   1280x480 -3.07%
+
+per-point failure lists:
+    320x120  9 coins: 1968, 1970_D1, 1978_D, 1992_D1, 1993_D1, 1995_D1, 1996_D, 1997_D, 1998_D
+    448x168  8 coins: 1968, 1970_D1, 1978_D, 1978_D1, 1995_D1, 1996_D, 1997_P, 1998_D
+    640x240 11 coins: 1968, 1970_D1, 1978_D, 1978_D1, 1989_D1, 1992_D1, 1993_D1, 1995_D1, 1996_D, 1997_P, 1998_D
+    800x304 10 coins: 1968, 1970_D1, 1978_D, 1978_D1, 1989_D1, 1992_D1, 1993_D1, 1995_D1, 1996_D, 1997_P
+    960x360 10 coins: 1968, 1970_D1, 1978_D, 1978_D1, 1989_D1, 1993_D1, 1995_D1, 1996_D, 1997_P, 1998_D
+   1280x480 15 coins: 1968, 1970_D1, 1978_D, 1978_D1, 1984_P, 1985_D, 1988_D1, 1989_D, 1989_D1, 1992_D1, 1993_D1, 1995_D, 1995_D1, 1996_D, 1998_D
+
+wrote /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/sweep_summary.json

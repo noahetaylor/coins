@@ -1,0 +1,77 @@
+{
+  "folds": 5,
+  "seed": 0,
+  "in_w": 800,
+  "in_h": 304,
+  "wear_aug": true,
+  "epochs": 30,
+  "per_band_mean": 0.9443652218590316,
+  "per_band_std": 0.016825228906329703,
+  "per_coin_mean": 0.9866957110011167,
+  "per_coin_std": 0.0041164970542315014,
+  "pooled_band_acc": 0.9442379182156134,
+  "pooled_coin_acc": 0.9866844207723036,
+  "failures": [
+    {
+      "coin_id": "2026data/1968",
+      "true": "1968",
+      "pred": "1976",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1970_D1",
+      "true": "1970",
+      "pred": "1988",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1978_D",
+      "true": "1978",
+      "pred": "1997",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1978_D1",
+      "true": "1978",
+      "pred": "1988",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1989_D1",
+      "true": "1989",
+      "pred": "1980",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1992_D1",
+      "true": "1992",
+      "pred": "1982",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1993_D1",
+      "true": "1993",
+      "pred": "1980",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1995_D1",
+      "true": "1995",
+      "pred": "1999",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1996_D",
+      "true": "1996",
+      "pred": "1967",
+      "bands": 6
+    },
+    {
+      "coin_id": "2026data/1997_P",
+      "true": "1997",
+      "pred": "1977",
+      "bands": 6
+    }
+  ],
+  "wall_seconds": 1743.9170534610748
+}

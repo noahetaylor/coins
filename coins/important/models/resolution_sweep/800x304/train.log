@@ -1,0 +1,47 @@
+input resolution: 800x304
+augmentation: WEAR (studio-domain simulation)
+
+fold 1/5: train 872 bands / 597 coins  |  val 204 bands / 154 coins
+  -> band 94.1%   coin 98.7% (152/154)
+
+fold 2/5: train 853 bands / 598 coins  |  val 223 bands / 153 coins
+  -> band 91.9%   coin 98.0% (150/153)
+
+fold 3/5: train 860 bands / 600 coins  |  val 216 bands / 151 coins
+  -> band 97.2%   coin 99.3% (150/151)
+
+fold 4/5: train 859 bands / 604 coins  |  val 217 bands / 147 coins
+  -> band 94.5%   coin 98.6% (145/147)
+
+fold 5/5: train 860 bands / 605 coins  |  val 216 bands / 146 coins
+  -> band 94.4%   coin 98.6% (144/146)
+
+==============================================================
+5-FOLD CROSS-VALIDATION
+==============================================================
+per-band year : 94.4%  +/- 1.7%   folds 94.1%, 91.9%, 97.2%, 94.5%, 94.4%
+per-coin year : 98.7%  +/- 0.4%   folds 98.7%, 98.0%, 99.3%, 98.6%, 98.6%
+
+pooled out-of-fold over ALL data:
+  bands 1016/1076 = 94.4%
+  coins 741/751 = 98.7%
+
+  per-source band accuracy:
+    2026data    246/306  = 80.4%
+    crops       331/331  = 100.0%
+    pcgs        355/355  = 100.0%
+    supers       84/84   = 100.0%
+
+  coin-level failures (10):
+    2026data/1968                            1968 -> 1976  (6 bands)
+    2026data/1970_D1                         1970 -> 1988  (6 bands)
+    2026data/1978_D                          1978 -> 1997  (6 bands)
+    2026data/1978_D1                         1978 -> 1988  (6 bands)
+    2026data/1989_D1                         1989 -> 1980  (6 bands)
+    2026data/1992_D1                         1992 -> 1982  (6 bands)
+    2026data/1993_D1                         1993 -> 1980  (6 bands)
+    2026data/1995_D1                         1995 -> 1999  (6 bands)
+    2026data/1996_D                          1996 -> 1967  (6 bands)
+    2026data/1997_P                          1997 -> 1977  (6 bands)
+
+wrote /home/noah/projects/image-identifier/coins/important/models/resolution_sweep/800x304/cross_val_report.json

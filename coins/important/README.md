@@ -1,106 +1,106 @@
 # Coin Processing Workspace
 
-This folder contains the active coin crop/rotation pipeline, training scripts, model weights, labels, older rotation experiments, and date/digit detection utilities.
+Reads the mint year off a photo of a quarter. The active pipeline finds the
+coin, crops the date band, and reads the 4 digits with a column-aligned CNN.
+As of 2026-08-30: 95.6% per-band accuracy, 99.1% per-coin accuracy (majority
+vote across a coin's bands) on 5-fold cross-validation over 751 coins. Every
+remaining failure is a coin from the `2026data` studio rig, not the scraped
+grading-site sources, which sit near 100%.
 
-## Layout
+## Active Pipeline
 
-- `pipeline/` - scripts that process raw coin images into cropped or rotated outputs.
-- `training/` - scripts that build datasets or train crop and rotation models.
-- `models/` - local model weights used by the pipeline.
-- `labels/` - manual crop labels.
-- `date_detection/` - YOLO date-region and digit-recognition workflow.
-- `legacy/` - older rotation experiments kept for reference.
+1. `harvest_date_bands.py` - locates each coin's circle geometry and crops
+   the date band (the strip containing the 4-digit year) from raw source
+   images across all sources (`2026data`, `pcgs`, `crops`, `supers`). Writes
+   `data/coins/DateBands/manifest.json` plus the cropped band images.
+2. `train_date_reader_v1.py` - trains a ResNet-18 trunk with 4 column-aligned
+   heads, one per digit position, on the harvested bands. Column alignment
+   (not global average pooling) is required - see the docstring on
+   `DateReader` for why.
 
-## Active Crop/Rotation Pipeline
-
-- `pipeline/preprocess_dataset.py` - rebuilt manual-label preprocessing path. Uses `labels/crop_labels.json`, crops flush to the coin, predicts folder-level rotation with `models/fine_rotation_full.pth`, writes centered upright 512x512 images to `data/coins/RotatedDatasetManualV2`, and saves debug artifacts.
-- `pipeline/process_with_labels.py` - compatibility entrypoint that runs `pipeline/preprocess_dataset.py`.
-- `pipeline/click_labeler_web.py` - browser-based manual labeling tool for coin center/rim labels.
-- `pipeline/rotate_opencv.py` - ML-crop version of the pipeline. Kept active but experimental until the crop model is improved.
-- `pipeline/test_crop_rotate_debug.py` - debug runner that saves crop/rotation visualization images for model predictions.
-- `preprocessing.py` - shared crop, rotation, path, model-loading, and visualization helpers used by the pipeline scripts.
-
-Small top-level launchers are kept for `process_with_labels.py`, `rotate_opencv.py`, and `test_crop_rotate_debug.py` so older editor tabs and commands still work.
-
-Run the rebuilt manual-label pipeline:
+Run 5-fold coin-level cross-validation (the right way to evaluate changes -
+splits by `coin_id` so the same physical coin never appears in both train and
+val under different lighting):
 
 ```bash
-python coins/important/pipeline/process_with_labels.py
+python coins/important/train_date_reader_v1.py --folds 5 --epochs 30 --wear-aug
 ```
 
-Output goes to `data/coins/RotatedDatasetManualV2`.
-
-Debug images go to `coins/important/debug/preprocess_v2`.
-
-Run the manual labeler:
+Train a single deployable checkpoint:
 
 ```bash
-python coins/important/pipeline/click_labeler_web.py
+python coins/important/train_date_reader_v1.py --epochs 30 --wear-aug \
+    --out coins/important/models/date_reader_v1.pth
 ```
 
-Run the experimental ML-crop pipeline:
+Key flags:
 
-```bash
-python coins/important/pipeline/rotate_opencv.py
-```
+- `--wear-aug` - degrades pristine scraped coins toward studio-rig conditions
+  (blur, low contrast, colour cast) instead of training on clean images only.
+  The failures concentrate entirely on the rig domain, so this augmentation
+  targets the regime that actually matters.
+- `--in-size WxH` - model input resolution, default `448x168`. A 6-point
+  sweep on 2026-08-29 (`models/resolution_sweep/`) found this is the peak:
+  320x120 undersamples the band, but pushing past 448x168 makes things
+  *worse* (1280x480 is -3.1% pooled band accuracy, with 3x the fold
+  variance) - more pixels gives the augmentation pipeline more room to
+  distort, not more signal. Resolution is a closed question; don't revisit
+  it without new evidence.
 
-Create crop-model debug overlays:
+Runs on GPU automatically if available (`DEVICE` picks CUDA when present),
+falls back to CPU otherwise.
 
-```bash
-python coins/important/pipeline/test_crop_rotate_debug.py --limit 20 --mask
-```
+## Current Investigation: Raking-Light Capture
 
-## Training
+The studio rig currently lights each coin with a sweep of 6 fixed LED
+colours (magenta/green/blue/purple/cyan/near-white) at a single fixed light
+position. Checked directly against the band images: the specular highlight
+does not move between colours, so this sweep carries zero shading/geometric
+information - only colour, which doesn't encode the physical relief a date
+is struck into.
 
-- `training/train_crop_model.py` - trains `models/crop_model.pth` from `labels/crop_labels.json`.
-- `training/1800_rotater.py` - current fine rotation regressor trainer; writes `models/fine_rotation_full.pth`.
-- `training/train_fine_rotation_regressor.py` - older fine rotation trainer; writes `models/fine_rotation_model.pth`.
-- `training/build_fine_rotation_dataset.py` - builds `data/coins/FineRotationDataset`.
-- `training/split_rotation_dataset.py` - splits coarse rotation training data.
+Plan: since the rig's LED ring is individually addressable, replace the
+colour sweep with a **4-direction raking-light sweep** (N/E/S/W, ~120° arcs,
+neutral white) that lights the coin from different directions instead of
+different colours. Grazing light from the side reveals worn relief a flat
+frontal shot doesn't. Fuse the 4 frames per coin with a contrast-weighted
+blend (comparable to exposure-fusion / Mertens-style blending) so no single
+frame's washout sinks a digit. This should cost about the same per-coin
+capture time as the current 6-frame colour sweep, or less, since it's a pure
+LED-firmware change with no moving parts.
 
-Train the crop model:
+Not yet implemented - next step is prototyping the fusion algorithm against
+the existing 6-colour bands as a stand-in dataset, to validate the fusion
+approach before any rig hardware changes.
 
-```bash
-python coins/important/training/train_crop_model.py --epochs 60 --samples-per-folder 0
-```
+## Legacy / Not Currently Active
 
-The crop trainer validates by folder, uses bounded outputs, and prints normalized loss plus approximate pixel error.
+These directories represent an earlier approach (crop the coin -> correct
+its rotation -> classify or detect the date region) that the project moved
+away from in favour of the geometric band-extraction approach above. Kept on
+disk for reference; do not resume without new evidence they're needed.
 
-## Model And Label Files
+- `pipeline/`, `training/`, `preprocessing.py`, `build_crop_dataset.py`,
+  `train_crop_model_v2.py`, `eval_crop_model_v2.py` - the crop pipeline.
+  `crop_model_v2.pth` predicts a near-constant: cx varies ~40px on a 4656px
+  image because the rig is fixed, so a fixed circle or Hough transform
+  solves this without a model. `harvest_date_bands.py` already does the
+  simpler thing.
+- `build_rotation_dataset_v2.py`, `train_rotation_model_v3_cpu.py`,
+  `eval_rotation_model.py`, `legacy/` - the rotation branch (v1-v4). Solves a
+  non-problem: coins in `2026Data` are already upright within ~±15°, and the
+  `rot_train_*` folders were made by hand-rotating already-upright coins.
+- `date_detection/` - a YOLO-based date-region + digit detector. Nothing in
+  the active pipeline imports from this folder; superseded by the simpler
+  manual-crop-label + circle-geometry approach in `harvest_date_bands.py`.
 
-- `models/crop_model.pth` - experimental crop model.
-- `models/fine_rotation_full.pth` - current rotation model used by the trusted pipeline.
-- `models/fine_rotation_model.pth` - older fine rotation model.
-- `models/rotation_model.pth` - older 0/90/180/270 classifier.
-- `labels/crop_labels.json` - manual per-folder crop circle labels.
+## Data
 
-## Date Detection
-
-- `date_detection/Bounds.py` - main YOLO date-region and digit recognition pipeline.
-- `date_detection/yolofilenamereorganizer.py` - converts year-labeled image folders into YOLO train/validation directories.
-- `date_detection/digitreorganizer.py` - builds a YOLO-formatted digit training dataset from labeled digit crops.
-- `date_detection/cropsaver.py` - extracts cropped date-region images from YOLO label files.
-- `date_detection/traindigitsyolo.py` - configurable digit model training script.
-- `date_detection/Cropper.py` - raw image cropping helper for splitting original coin scans.
-
-Train the date detector:
-
-```bash
-python coins/important/date_detection/Bounds.py --mode train-date --base-dir data/coins/Bounds/Heads --date-weights yolov8n.pt --epochs-date 30
-```
-
-Train the digit detector:
-
-```bash
-python coins/important/date_detection/Bounds.py --mode train-digit --base-dir data/coins/Bounds/Heads --digit-weights yolov8n.pt --epochs-digit 40
-```
-
-Evaluate the date/digit pipeline:
-
-```bash
-python coins/important/date_detection/Bounds.py --mode eval --base-dir data/coins/Bounds/Heads --failure-csv coins/important/failures.csv
-```
-
-## Notes
-
-The scripts that use labels or weights resolve those paths relative to `coins/important`, so they can be run from the project root without depending on the current working directory.
+- `data/coins/DateBands/manifest.json` - one record per harvested band:
+  `coin_id`, `source`, `year`/`digits`, `band_box`, circle geometry.
+  `2026data` is 53 physical coins (751 coins total across all sources); split
+  cross-validation by `coin_id`, never by image, or the same coin ends up on
+  both sides of the split under different lighting.
+- CPU-only training takes ~10 min for 320x120 at 30 epochs; GPU cuts this to
+  minutes. See `models/resolution_sweep/sweep_summary.json` for the full
+  per-resolution timing and accuracy breakdown.
