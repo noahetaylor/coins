@@ -20,3 +20,6 @@ __pycache__/
 
 # Generated debug images
 debug/
+# Editor / OS
+.DS_Store
+Thumbs.db

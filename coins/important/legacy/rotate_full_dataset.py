@@ -1,4 +1,3 @@
-from openai import images
 import torch
 import math
 import cv2
