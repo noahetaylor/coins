@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coin Reader</title>
+<!-- Served by demo_station.py. Space = scan, Esc = clear. -->
+<style>
+  :root { --desk: #3a6ea5; --face: #d4d0c8; --light: #fff; --shade: #808080; --dark: #404040;
+          --title-a: #0a246a; --title-b: #a6caf0; color-scheme: light; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  body { font-family: Tahoma, Verdana, sans-serif; }
+  #stage { position: absolute; width: 1920px; height: 1080px; left: 50%; top: 50%;
+           transform-origin: 50% 50%; background: var(--desk); }
+  .win { position: absolute; left: 110px; top: 60px; width: 1700px; height: 960px; background: var(--face);
+         padding: 4px; display: flex; flex-direction: column;
+         box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--face), inset -2px -2px var(--shade),
+                     inset 2px 2px var(--light), 4px 6px 0 rgba(0,0,0,.18); }
+  .bar { height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 4px 0 8px; color: #fff;
+         font-weight: bold; font-size: 17px; background: linear-gradient(90deg, var(--title-a), var(--title-b)); }
+  .bar .t { flex: 1; }
+  .cap b { display: inline-block; width: 24px; height: 21px; margin-left: 2px; background: var(--face); color: #000;
+           font: bold 13px/21px Tahoma; text-align: center;
+           box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shade); }
+  .menu { display: flex; gap: 18px; padding: 5px 8px; font-size: 15px; }
+  .menu u { text-decoration: underline; }
+  .main { flex: 1; display: flex; gap: 14px; padding: 8px; min-height: 0; }
+  .sunk { box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light), inset 2px 2px var(--dark); padding: 2px; }
+  .view { width: 800px; height: 800px; flex: none; background: #000; position: relative; overflow: hidden; }
+  .view img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .view .msg { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+               justify-content: center; color: #c0c0c0; font-size: 24px; gap: 18px; text-align: center; }
+  .side { flex: 1; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .grp { position: relative; padding: 18px 14px 14px;
+         box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light), 1px 1px var(--light), -1px -1px var(--shade); }
+  .grp > i { position: absolute; top: -11px; left: 10px; background: var(--face); padding: 0 5px; font-style: normal; font-size: 16px; }
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 18px; }
+  .steps div { display: flex; align-items: center; gap: 10px; color: #808080; }
+  .steps div::before { content: ""; width: 14px; height: 14px; flex: none;
+                       box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light); background: #fff; }
+  .steps .now { color: #000; font-weight: bold; }
+  .steps .now::before { background: #ffcc00; }
+  .steps .ok { color: #000; }
+  .steps .ok::before { background: #1baf7a; }
+  .btnrow { display: flex; gap: 14px; align-items: center; }
+  .btn { width: 230px; height: 54px; font-size: 21px; font-weight: bold; display: flex; align-items: center;
+         justify-content: center; background: var(--face); cursor: pointer; user-select: none;
+         box-shadow: 0 0 0 1px #000, inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shade); }
+  .btn:active, .btn.down { box-shadow: 0 0 0 1px #000, inset 1px 1px var(--dark), inset 2px 2px var(--shade); }
+  .btn span { padding: 2px 8px; outline: 1px dotted #000; }
+  .btn.off { color: #808080; text-shadow: 1px 1px #fff; }
+  .hint { font-size: 16px; color: #333; }
+  .band { height: 150px; background: #000; }
+  .band img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .year { font-size: 150px; font-weight: bold; line-height: 1; letter-spacing: 6px; color: #0a246a; }
+  .year.wait { color: #b0aea6; }
+  .detail { font-size: 19px; color: #000; line-height: 1.5; }
+  .votes { font: 17px/1.6 "Lucida Console", Consolas, monospace; color: #333; }
+  .err { color: #a00; font-size: 18px; }
+  .status { display: flex; gap: 4px; font-size: 14px; }
+  .status span { padding: 3px 8px; box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light); }
+  .status span:first-child { flex: 1; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="win">
+    <div class="bar"><span class="t">Coin Reader - raking-light rig</span><span class="cap"><b>_</b><b>□</b><b>×</b></span></div>
+    <div class="menu"><span><u>F</u>ile</span><span><u>S</u>can</span><span><u>V</u>iew</span><span><u>H</u>elp</span></div>
+    <div class="main">
+      <div class="view sunk" id="view"></div>
+      <div class="side">
+        <div class="grp"><i>Capture</i>
+          <div class="steps" id="steps"></div>
+        </div>
+        <div class="btnrow">
+          <div class="btn" id="scan"><span>Scan coin</span></div>
+          <div class="hint">Place the coin date-down, then press Scan (or Space)</div>
+        </div>
+        <div class="grp" style="flex:1"><i>Date reader</i>
+          <div class="band sunk" id="band"></div>
+          <div style="display:flex; gap:30px; align-items:flex-end; margin-top:16px">
+            <div class="year wait" id="year">----</div>
+            <div>
+              <div class="detail" id="detail">&nbsp;</div>
+              <div class="votes" id="votes"></div>
+            </div>
+          </div>
+          <div class="err" id="err"></div>
+        </div>
+      </div>
+    </div>
+    <div class="status"><span id="st">Ready</span><span>ResNet-18 date reader · 448 × 168</span></div>
+  </div>
+</div>
+<script>
+const LED_ANGLES = [95, 57, 36, 18, 1, 344, 329, 314, 279, 249, 223, 206, 190, 174, 156, 130];  // measured
+const ARCS = { N: [14, 15, 0, 1, 2], E: [2, 3, 4, 5, 6], S: [6, 7, 8, 9, 10], W: [10, 11, 12, 13, 14],
+               all: [...Array(16).keys()], dark: [] };
+const STEPS = [["dark", "dark frame"], ["N", "north arc"], ["E", "east arc"], ["S", "south arc"],
+               ["W", "west arc"], ["all", "whole ring"], ["transferring", "send to PC"], ["reading", "read date"]];
+const $ = id => document.getElementById(id);
+
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $("stage").style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener("resize", fit); fit();
+
+function ring(lit) {
+  const R = 230, c = 300;
+  const on = ARCS[lit] || [];
+  const dots = LED_ANGLES.map((a, i) => {
+    const t = a * Math.PI / 180, x = c + R * Math.cos(t), y = c - R * Math.sin(t);
+    const hit = on.includes(i);
+    return `<circle cx="${x}" cy="${y}" r="20" fill="${hit ? "#ff8a32" : "#2a2a28"}" stroke="${hit ? "#ffd2a8" : "#555"}" stroke-width="2"/>` +
+           (hit ? `<line x1="${c + 0.55 * R * Math.cos(t)}" y1="${c - 0.55 * R * Math.sin(t)}" x2="${x}" y2="${y}" stroke="#ff8a32" stroke-width="4" opacity=".55"/>` : "");
+  }).join("");
+  return `<svg width="600" height="600" viewBox="0 0 600 600">
+    <circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="#555" stroke-width="2"/>
+    <circle cx="${c}" cy="${c}" r="115" fill="#3a3936"/>
+    <text x="${c}" y="${c + 8}" text-anchor="middle" font-size="24" fill="#aaa" font-family="Tahoma">coin</text>${dots}</svg>`;
+}
+
+let last = "";
+function render(s) {
+  const key = JSON.stringify([s.stage, s.lit, s.done, !!s.result, s.error]);
+  if (key === last) return; last = key;
+  const now = s.stage === "capturing" ? s.lit : s.stage;
+  $("steps").innerHTML = STEPS.map(([k, t]) => {
+    const ok = s.done.includes(k) || (k === "transferring" && ["reading", "done"].includes(s.stage)) ||
+               (k === "reading" && s.stage === "done");
+    return `<div class="${ok ? "ok" : now === k ? "now" : ""}">${t}</div>`;
+  }).join("");
+  $("scan").classList.toggle("off", !!s.busy);
+  $("err").textContent = s.error ? "Error: " + s.error : "";
+  const view = $("view");
+  if (s.stage === "done" && s.result) {
+    const r = s.result;
+    view.innerHTML = `<img src="data:image/jpeg;base64,${r.coin}">`;
+    $("band").innerHTML = `<img src="data:image/jpeg;base64,${r.band}">`;
+    $("year").textContent = r.year; $("year").classList.remove("wait");
+    $("detail").innerHTML = `<b>${r.agree} of ${r.of}</b> lighting frames agree<br>confidence ${(r.confidence * 100).toFixed(0)}%`;
+    $("votes").textContent = r.votes.map(v => `${v.frame.padEnd(4)}${v.digits}`).join("   ");
+    $("st").textContent = "Done - press Space to scan the next coin";
+  } else if (s.stage === "capturing") {
+    view.innerHTML = `<div class="msg">${ring(s.lit)}<div>Capturing: ${STEPS.find(x => x[0] === s.lit)?.[1] || ""}</div></div>`;
+    $("st").textContent = "Capturing on the Pi...";
+  } else if (s.stage === "transferring" || s.stage === "reading") {
+    view.innerHTML = `<div class="msg">${ring("all")}<div>${s.stage === "reading" ? "Reading the date..." : "Sending frames to PC..."}</div></div>`;
+    $("st").textContent = s.stage === "reading" ? "Running the date reader..." : "Transferring...";
+  } else {
+    view.innerHTML = `<div class="msg">${ring(null)}<div>Place a coin on the rig</div></div>`;
+    $("band").innerHTML = ""; $("year").textContent = "----"; $("year").classList.add("wait");
+    $("detail").innerHTML = "&nbsp;"; $("votes").textContent = "";
+    $("st").textContent = s.stage === "error" ? "Error" : "Ready";
+  }
+}
+
+async function poll() {
+  try { render(await (await fetch("/status")).json()); } catch (e) {}
+  setTimeout(poll, 150);
+}
+async function scan() {
+  $("scan").classList.add("down"); setTimeout(() => $("scan").classList.remove("down"), 150);
+  await fetch("/scan", { method: "POST" });
+}
+$("scan").onclick = scan;
+addEventListener("keydown", e => {
+  if (e.key === " ") { e.preventDefault(); scan(); }
+  if (e.key === "Escape") fetch("/reset", { method: "POST" });
+});
+poll();
+</script>
+</body>
+</html>

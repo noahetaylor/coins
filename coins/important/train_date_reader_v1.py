@@ -489,7 +489,16 @@ def main():
     ap.add_argument("--wear-aug", action="store_true",
                     help="degrade pristine coins toward studio-rig conditions "
                          "(blur, low contrast, heavy colour cast)")
+    ap.add_argument("--bands-root", type=Path, default=None,
+                    help="a DateBands variant (manifest.json + bands/), e.g. "
+                         "one built by build_raking_bands.py")
     args = ap.parse_args()
+
+    if args.bands_root:
+        global BANDS_ROOT, MANIFEST
+        BANDS_ROOT = args.bands_root.resolve()
+        MANIFEST = BANDS_ROOT / "manifest.json"
+        print(f"bands: {BANDS_ROOT}")
 
     if args.in_size:
         global IN_W, IN_H

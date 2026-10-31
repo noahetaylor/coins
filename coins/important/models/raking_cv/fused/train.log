@@ -1,0 +1,44 @@
+bands: /home/noah/projects/image-identifier/data/coins/DateBands_raking_fused
+input resolution: 448x168
+augmentation: WEAR (studio-domain simulation)
+
+fold 1/5: train 818 bands / 596 coins  |  val 202 bands / 154 coins
+  -> band 97.5%   coin 99.4% (153/154)
+
+fold 2/5: train 808 bands / 597 coins  |  val 212 bands / 153 coins
+  -> band 100.0%   coin 100.0% (153/153)
+
+fold 3/5: train 816 bands / 600 coins  |  val 204 bands / 150 coins
+  -> band 92.6%   coin 98.0% (147/150)
+
+fold 4/5: train 822 bands / 603 coins  |  val 198 bands / 147 coins
+  -> band 94.9%   coin 98.6% (145/147)
+
+fold 5/5: train 816 bands / 604 coins  |  val 204 bands / 146 coins
+  -> band 99.0%   coin 100.0% (146/146)
+
+==============================================================
+5-FOLD CROSS-VALIDATION
+==============================================================
+per-band year : 96.8%  +/- 2.7%   folds 97.5%, 100.0%, 92.6%, 94.9%, 99.0%
+per-coin year : 99.2%  +/- 0.8%   folds 99.4%, 100.0%, 98.0%, 98.6%, 100.0%
+
+pooled out-of-fold over ALL data:
+  bands 988/1020 = 96.9%
+  coins 744/750 = 99.2%
+
+  per-source band accuracy:
+    2026data    218/250  = 87.2%
+    crops       331/331  = 100.0%
+    pcgs        355/355  = 100.0%
+    supers       84/84   = 100.0%
+
+  coin-level failures (6):
+    2026data/1977_D                          1977 -> 1975  (5 bands)
+    2026data/1985_D1                         1985 -> 1981  (5 bands)
+    2026data/1989_D                          1989 -> 1995  (5 bands)
+    2026data/1991_P1                         1991 -> 1995  (5 bands)
+    2026data/1993_D                          1993 -> 1983  (5 bands)
+    2026data/1998_D                          1998 -> 1987  (5 bands)
+
+wrote models/raking_cv/fused/cross_val_report.json

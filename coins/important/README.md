@@ -50,28 +50,37 @@ Key flags:
 Runs on GPU automatically if available (`DEVICE` picks CUDA when present),
 falls back to CPU otherwise.
 
-## Current Investigation: Raking-Light Capture
+## Raking-Light Capture
 
-The studio rig currently lights each coin with a sweep of 6 fixed LED
-colours (magenta/green/blue/purple/cyan/near-white) at a single fixed light
-position. Checked directly against the band images: the specular highlight
-does not move between colours, so this sweep carries zero shading/geometric
-information - only colour, which doesn't encode the physical relief a date
-is struck into.
+The old rig capture (`rig/capture_rotation.py`) swept a bright spot around
+the LED ring in 7 colours, but kept every other LED at 45% plus a 30% white
+fill. That much fill light washed out the shading, so the struck relief of a
+worn date barely showed, and the sweep mostly varied colour, which carries no
+information about relief.
 
-Plan: since the rig's LED ring is individually addressable, replace the
-colour sweep with a **4-direction raking-light sweep** (N/E/S/W, ~120° arcs,
-neutral white) that lights the coin from different directions instead of
-different colours. Grazing light from the side reveals worn relief a flat
-frontal shot doesn't. Fuse the 4 frames per coin with a contrast-weighted
-blend (comparable to exposure-fusion / Mertens-style blending) so no single
-frame's washout sinks a digit. This should cost about the same per-coin
-capture time as the current 6-frame colour sweep, or less, since it's a pure
-LED-firmware change with no moving parts.
+`rig/capture_raking.py` replaces it with a photometric-stereo style capture:
+a dark frame, four pure 5-LED arcs (N/E/S/W, all other LEDs off), and one
+flat-lit frame, with exposure and white balance locked so the directional
+differences survive. `fuse_raking.py` turns the four directions into a single
+relief-enhanced image (per-pixel slope from the E-W and N-S ratios, re-shaded
+as if lit from a low angle). `build_raking_bands.py` builds a DateBands
+variant where only the rig coins are swapped for the new captures, and
+`train_date_reader_v1.py --bands-root` trains on it (`start_raking_cv.sh`).
 
-Not yet implemented - next step is prototyping the fusion algorithm against
-the existing 6-colour bands as a stand-in dataset, to validate the fusion
-approach before any rig hardware changes.
+Result, same 50 rig coins, same 5-fold cross-validation
+(`models/raking_cv/`):
+
+| Rig capture | Rig coins read correctly |
+|---|---|
+| Old colour sweep | 42 / 50 (84%) |
+| Raking light, directional frames | 44 / 50 (88%) |
+| Raking light, fused | 44 / 50 (88%) |
+
+The gain comes from the lighting itself; fusing the frames ties with using
+the directional frames directly. It is a modest gain from one training seed.
+
+`rig/demo_station.py` is a one-button scan page: it triggers a raking capture
+on the Pi, pulls the frames back and votes a year across them.
 
 ## Legacy / Not Currently Active
 
